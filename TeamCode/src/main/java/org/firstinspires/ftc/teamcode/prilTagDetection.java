@@ -1,10 +1,26 @@
+package org.firstinspires.ftc.teamcode;
+
+import android.util.Size;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import java.util.List;
+
+
 @TeleOp
-public class AprilTagDetection extends LinearOpMode{
+public class prilTagDetection extends LinearOpMode{
 
     private AprilTagProcessor aprilTag;
 
     private VisionPortal visionPortal;
-
 
 
     @Override
@@ -22,18 +38,18 @@ public class AprilTagDetection extends LinearOpMode{
 
     private void initAprilTag() {
         aprilTag = new AprilTagProcessor.Builder()
-            .setOutputUnits(DistanceUnit.CM, AngleUnit.DEGREES)
-            //.setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
-            .build();
+                .setOutputUnits(DistanceUnit.CM, AngleUnit.DEGREES)
+                //.setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
+                .build();
 
         VisionPortal.Builder builder = new VisionPortal.Builder();
         builder.setCamera(hardwareMap.get(WebcamName.class, "AprilTagCamera"));
         builder.setCameraResolution(new Size(640, 480));
-        builder.enableCameraMonitoring(true);
+//        builder.enableCameraMonitoring(true);
         builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
         builder.setAutoStopLiveView(true);
         builder.addProcessor(aprilTag);
-        
+
         visionPortal = builder.build();
 
     }

@@ -65,7 +65,7 @@ public class DriveConstants {
      * small and gradually increase them later after everything is working. All distance units are
      * inches.
      */
-    public static double MAX_VEL = (MAX_RPM/60)*GEAR_RATIO*WHEEL_RADIUS*2*Math.PI;
+    public static double MAX_VEL = 57.277241;
 
     //TODO: check this
     public static double MAX_ACCEL = MAX_VEL;

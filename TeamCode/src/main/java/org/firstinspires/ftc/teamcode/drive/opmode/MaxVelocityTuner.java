@@ -27,7 +27,7 @@ import java.util.Objects;
 @Config
 @Autonomous(group = "drive")
 public class MaxVelocityTuner extends LinearOpMode {
-    public static double RUNTIME = 2.0;
+    public static double RUNTIME = 1.0;
 
     private ElapsedTime timer;
     private double maxVelocity = 0.0;
@@ -69,6 +69,7 @@ public class MaxVelocityTuner extends LinearOpMode {
         drive.setDrivePower(new Pose2d());
 
         double effectiveKf = DriveConstants.getMotorVelocityF(veloInchesToTicks(maxVelocity));
+
 
         telemetry.addData("Max Velocity", maxVelocity);
         telemetry.addData("Max Recommended Velocity", maxVelocity * 0.8);

@@ -9,9 +9,9 @@ public class LaunchSystem {
 
     public LaunchSystem(HardwareMap map){
         launch = map.servo.get("launch");
-        launch.setPosition(0);
-    }
-    public void LaunchP(){
         launch.setPosition(1);
     }
+    public void LaunchP(){launch.setPosition(0);
+    }
+
 }

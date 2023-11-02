@@ -56,8 +56,8 @@ public class ElvatorErectionSystem {
 
     public void LowerHeight(){
        while (!magneticSwitch.isPressed()) {
-           Lm.setPower(-power);
-           Rm.setPower(-power);
+           Lm.setPower(power);
+           Rm.setPower(power);
        }
        Lm.setPower(0);
        Rm.setPower(0);

@@ -8,11 +8,12 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 public class ElevatorSystem {
     DcMotor elevator;
     TouchSensor magneticSwitch;
-    final double Speed = -0.4;
+    final double Speed = 0.4;
     final int MAX_HEIGHT = 1000;
 
     public ElevatorSystem(HardwareMap map){
-        elevator = map.dcMotor.get("Elevator");
+        elevator = map.dcMotor.get("    ");
+        elevator.setDirection(DcMotor.Direction.REVERSE);
         magneticSwitch= map.get(TouchSensor.class, "elevatorSwitch");
         elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LowerElevator();
@@ -28,7 +29,7 @@ public class ElevatorSystem {
     }
 
 
-    public void  LowerElevator (){
+    public void LowerElevator (){
        while(!magneticSwitch.isPressed()){
             elevator.setPower(Speed);
        }

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -19,15 +21,21 @@ public class TestTeleOp extends OpMode {
     public void init() {
         driveSystem =  new DriveSystem(hardwareMap, gamepad1);
 //        elevatorSystem = new ElevatorSystem(hardwareMap);
-//        elvatorErectionSystem = new ElvatorErectionSystem(hardwareMap);
+        elvatorErectionSystem = new ElvatorErectionSystem(hardwareMap);
 //        endPointSystem = new EndPointSystem((hardwareMap));
         launchSystem = new LaunchSystem(hardwareMap);
+        telemetry.addData("endInit","");
+        telemetry.update();
     }
 
     @Override
     public void loop()
     {
         driveSystem.Drive();
+
+        telemetry.addData("lm",elvatorErectionSystem.Lm.getCurrentPosition());
+        telemetry.addData("rm",elvatorErectionSystem.Rm.getCurrentPosition());
+        telemetry.update();
 //        elevatorSystem.Extension(gamepad1.right_trigger - gamepad1.left_trigger);
 
 //        if((gamepad1.right_bumper || gamepad1.left_bumper) && !RLBPressed){
@@ -36,20 +44,31 @@ public class TestTeleOp extends OpMode {
 //        } else if(RLBPressed){
 //            RLBPressed = false;
 //        }
+        //ציר המעלית
+        if(gamepad1.right_bumper) {
+            elvatorErectionSystem.elevatorUp();
+        }
+        if(gamepad1.left_bumper) {
+            elvatorErectionSystem.elevatorDown();
+        }
+        if(!gamepad1.left_bumper || !gamepad1.right_bumper){
+            elvatorErectionSystem.elevatorToZero();
+        }
+
         //שאיבה
-        if(gamepad1.x && !XPressed){
-            XPressed = true;
-            endPointSystem.sucking();
-        } else if (!gamepad1.x) {
-            XPressed = false;
-        }
+//        if(gamepad1.x && !XPressed){
+//            XPressed = true;
+//            endPointSystem.sucking();
+//        } else if (!gamepad1.x) {
+//            XPressed = false;
+//        }
         //פריקה
-        if(gamepad1.a && !APressed){
-            APressed = true;
-            endPointSystem.spitting();
-        } else if (!gamepad1.a) {
-            APressed = false;
-        }
+//        if(gamepad1.a && !APressed){
+//            APressed = true;
+//            endPointSystem.spitting();
+//        } else if (!gamepad1.a) {
+//            APressed = false;
+//        }
         //מטוס
         if(gamepad1.y && !YPressed){
             YPressed = true;

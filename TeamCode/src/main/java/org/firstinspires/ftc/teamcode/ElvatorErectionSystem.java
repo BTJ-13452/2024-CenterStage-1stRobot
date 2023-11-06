@@ -19,8 +19,7 @@ public class ElvatorErectionSystem {
         Lm = map.dcMotor.get("lm");
         Rm = map.dcMotor.get("rm");
         Lm.setDirection(DcMotorSimple.Direction.REVERSE);
-        Lm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Rm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         magneticSwitch = map.get(TouchSensor.class, "erectionSwitch");
         LowerHeight(-1);
 //        Lm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -76,7 +75,8 @@ public class ElvatorErectionSystem {
     public void elevatorToZero(){
         Lm.setPower(0);
         Rm.setPower(0);
-
+        Lm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Rm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void LowerHeight(int power){

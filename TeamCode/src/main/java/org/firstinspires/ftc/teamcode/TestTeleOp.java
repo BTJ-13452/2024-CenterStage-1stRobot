@@ -20,8 +20,8 @@ public class TestTeleOp extends OpMode {
     @Override
     public void init() {
         driveSystem =  new DriveSystem(hardwareMap, gamepad1);
-//        elevatorSystem = new ElevatorSystem(hardwareMap);
-        elvatorErectionSystem = new ElvatorErectionSystem(hardwareMap);
+        elevatorSystem = new ElevatorSystem(hardwareMap);
+//        elvatorErectionSystem = new ElvatorErectionSystem(hardwareMap);
 //        endPointSystem = new EndPointSystem((hardwareMap));
         launchSystem = new LaunchSystem(hardwareMap);
         telemetry.addData("endInit","");
@@ -33,8 +33,8 @@ public class TestTeleOp extends OpMode {
     {
         driveSystem.Drive();
 
-        telemetry.addData("lm",elvatorErectionSystem.Lm.getCurrentPosition());
-        telemetry.addData("rm",elvatorErectionSystem.Rm.getCurrentPosition());
+//        telemetry.addData("lm",elvatorErectionSystem.Lm.getCurrentPosition());
+        telemetry.addData("motor",elevatorSystem.elevator.getCurrentPosition());
         telemetry.update();
 //        elevatorSystem.Extension(gamepad1.right_trigger - gamepad1.left_trigger);
 
@@ -45,15 +45,15 @@ public class TestTeleOp extends OpMode {
 //            RLBPressed = false;
 //        }
         //ציר המעלית
-        if(gamepad1.right_bumper) {
-            elvatorErectionSystem.elevatorUp();
-        }
-        if(gamepad1.left_bumper) {
-            elvatorErectionSystem.elevatorDown();
-        }
-        if(!gamepad1.left_bumper || !gamepad1.right_bumper){
-            elvatorErectionSystem.elevatorToZero();
-        }
+//        if(gamepad1.right_bumper) {
+//            elvatorErectionSystem.elevatorUp();
+//        }
+//        if(gamepad1.left_bumper) {
+//            elvatorErectionSystem.elevatorDown();
+//        }
+//        if(!gamepad1.left_bumper && !gamepad1.right_bumper){
+//            elvatorErectionSystem.elevatorToZero();
+//        }
 
         //שאיבה
 //        if(gamepad1.x && !XPressed){
@@ -77,6 +77,16 @@ public class TestTeleOp extends OpMode {
         else if(!gamepad1.y){
             YPressed = false;
         }
+        // מעלית
+        if(gamepad1.right_trigger>0)
+        {
+            elevatorSystem.elevatorUp();
+        }
+        else if(gamepad1.left_trigger>0)
+        {
+            elevatorSystem.elevatorDown();
+        }
+
 
 
     }

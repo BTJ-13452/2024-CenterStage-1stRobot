@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class ElvatorErectionSystem {
 
-    final int[] positions =new int[]{0,20,40,60};
+    final int[] positions = new int[]{0,20,40,60};
    // final double power = 1;
     int position = 0;
     public DcMotor Lm;
@@ -63,12 +63,12 @@ public class ElvatorErectionSystem {
     }*/ //פונקציה של יהושע
 
     public void elevatorUp(){
-        Lm.setPower(1);
-        Rm.setPower(1);
+        Lm.setPower(0.7);
+        Rm.setPower(0.7);
     }
     public void elevatorDown(){
-        Lm.setPower(-1);
-        Rm.setPower(-1);
+        Lm.setPower(-0.7);
+        Rm.setPower(-0.7);
 
 //        LowerHeight(-1);
     }
@@ -79,7 +79,7 @@ public class ElvatorErectionSystem {
         Rm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    public void LowerHeight(int power){
+    public void LowerHeight(double power){
        while (!magneticSwitch.isPressed()) {
            Lm.setPower(power);
            Rm.setPower(power);

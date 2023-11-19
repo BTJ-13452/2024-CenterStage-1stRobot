@@ -16,7 +16,6 @@ public class TestTeleOp extends OpMode {
         boolean APressed = false;
         LaunchSystem launchSystem;
         boolean YPressed = false;
-
         YKS yks;
 
     @Override
@@ -30,7 +29,6 @@ public class TestTeleOp extends OpMode {
         telemetry.addData("endInit","");
         telemetry.update();
     }
-
     @Override
     public void loop()
     {
@@ -88,10 +86,5 @@ public class TestTeleOp extends OpMode {
         if (gamepad1.b){
         yks.openYksRight();
         }else yks.closeYksRight();
-
     }
-
-
-
-
 }

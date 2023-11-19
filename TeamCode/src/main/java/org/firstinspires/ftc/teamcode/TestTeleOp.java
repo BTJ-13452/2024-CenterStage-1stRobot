@@ -16,6 +16,10 @@ public class TestTeleOp extends OpMode {
         boolean APressed = false;
         LaunchSystem launchSystem;
         boolean YPressed = false;
+
+        hangingRobot hangingRobot;
+
+
         YKS yks;
 
     @Override
@@ -24,6 +28,7 @@ public class TestTeleOp extends OpMode {
         elevatorSystem = new ElevatorSystem(hardwareMap);
         elvatorErectionSystem = new ElvatorErectionSystem(hardwareMap);
         yks = new YKS(hardwareMap);
+        hangingRobot = new hangingRobot(hardwareMap);
 //        endPointSystem = new EndPointSystem((hardwareMap));
         launchSystem = new LaunchSystem(hardwareMap);
         telemetry.addData("endInit","");
@@ -81,10 +86,26 @@ public class TestTeleOp extends OpMode {
 
         if (gamepad1.a){
             yks.openYksLeft();
-        }else yks.closeYksLeft();
+        }else
+            yks.closeYksLeft();
 
         if (gamepad1.b){
-        yks.openYksRight();
-        }else yks.closeYksRight();
+            yks.openYksRight();
+        }else
+            yks.closeYksRight();
+
+
+        if (gamepad1.right_trigger > 0)
+            elevatorSystem.Extension(gamepad1.right_trigger);
+        if (gamepad1.left_trigger > 0)
+            elevatorSystem.LowerElevator(gamepad1.left_trigger);
+        if (gamepad1.right_trigger == 0 && gamepad1.left_trigger == 0){
+            elevatorSystem.StopElevator();
+        }
+        if (gamepad1.x && !XPressed){
+            XPressed = true;
+            hangingRobot.hang();
+        }if (!gamepad1.x)
+            XPressed = false;
     }
 }

@@ -108,4 +108,9 @@ public class TestTeleOp extends OpMode {
         }if (!gamepad1.x)
             XPressed = false;
     }
+
+    @Override
+    public void stop(){
+        elvatorErectionSystem.StopEndGame();
+    }
 }

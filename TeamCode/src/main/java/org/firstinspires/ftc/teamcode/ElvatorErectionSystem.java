@@ -88,4 +88,16 @@ public class ElvatorErectionSystem {
        Lm.setPower(0);
        Rm.setPower(0);
     }
+
+    public void StopEndGame(){
+        while(true){
+            if (!magneticSwitch.isPressed()){
+                Lm.setPower(-1);
+                Rm.setPower(-1);
+            } else {
+                Lm.setPower(0);
+                Rm.setPower(0);
+            }
+        }
+    }
 }

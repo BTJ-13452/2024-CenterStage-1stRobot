@@ -404,6 +404,7 @@ public class FtcRobotControllerActivity extends Activity
     if (preferencesHelper.readBoolean(getString(R.string.pref_wifi_automute), false)) {
       initWifiMute(true);
     }
+
     FtcDashboard.start(this);
 
     FtcAboutActivity.setBuildTimeFromBuildConfig(BuildConfig.APP_BUILD_TIME);
@@ -412,6 +413,8 @@ public class FtcRobotControllerActivity extends Activity
     checkPreferredChannel();
 
     AnnotatedHooksClassFilter.getInstance().callOnCreateMethods(this);
+
+
   }
 
   protected UpdateUI createUpdateUI() {

@@ -14,6 +14,8 @@ public class TestTeleOp extends OpMode {
         EndPointSystem endPointSystem;
         boolean XPressed = false;
         boolean APressed = false;
+        boolean BPressed = false;
+        boolean upPressed = false;
         LaunchSystem launchSystem;
         boolean YPressed = false;
 
@@ -33,6 +35,8 @@ public class TestTeleOp extends OpMode {
         launchSystem = new LaunchSystem(hardwareMap);
         telemetry.addData("endInit","");
         telemetry.update();
+
+//        hardwareMap.servo.get("erectionYks").setPosition(0);
     }
     @Override
     public void loop()
@@ -41,6 +45,7 @@ public class TestTeleOp extends OpMode {
 
         telemetry.addData("lm",elvatorErectionSystem.Lm.getCurrentPosition());
         telemetry.addData("rm",elvatorErectionSystem.Rm.getCurrentPosition());
+        telemetry.addData("yksRight",yks.yksRight.getPosition());
         telemetry.update();
 //        elevatorSystem.Extension(gamepad1.right_trigger - gamepad1.left_trigger);
 
@@ -84,15 +89,29 @@ public class TestTeleOp extends OpMode {
             YPressed = false;
         }
 
-        if (gamepad1.a){
-            yks.openYksLeft();
-        }else
-            yks.closeYksLeft();
+        if (gamepad1.a&&!APressed){
+            APressed=true;
+            if(yks.yksLeft.getPosition()==0){
+                yks.openYksLeft();
+            }else if(yks.yksLeft.getPosition()==0.5){
+                yks.closeYksLeft();
 
-        if (gamepad1.b){
-            yks.openYksRight();
-        }else
-            yks.closeYksRight();
+            }
+        }
+        if(!gamepad1.a){
+            APressed=false;
+        }
+        if (gamepad1.b&&!BPressed){
+            BPressed=true;
+            if(yks.yksRight.getPosition()==1){
+                yks.openYksRight();
+            }else if(yks.yksRight.getPosition()!= 1){
+                yks.closeYksRight();
+            }
+        }
+        if(!gamepad1.b){
+            BPressed=false;
+        }
 
 
         if (gamepad1.right_trigger > 0)
@@ -104,9 +123,24 @@ public class TestTeleOp extends OpMode {
         }
         if (gamepad1.x && !XPressed){
             XPressed = true;
-            hangingRobot.hang();
+            if(hangingRobot.hang.getPosition()==1){
+                hangingRobot.hang();
+            }else if(hangingRobot.hang.getPosition()==0){
+                hangingRobot.stopHang();
+            }
         }if (!gamepad1.x)
             XPressed = false;
+
+        if(gamepad1.dpad_up&&!upPressed){
+            upPressed=true;
+            yks.openErectionYks();
+        }
+        if(!gamepad1.dpad_up){
+            upPressed=false;
+        }
+        if(gamepad1.dpad_down){
+            yks.closeErectionYks();
+        }
     }
 
     @Override

@@ -13,6 +13,7 @@ public class hangingRobot {
 
     }
 
-    public void hang(){hang.setPosition(0);
-    }
+    public void hang(){hang.setPosition(0);}
+    public void stopHang(){hang.setPosition(1);}
 }
+

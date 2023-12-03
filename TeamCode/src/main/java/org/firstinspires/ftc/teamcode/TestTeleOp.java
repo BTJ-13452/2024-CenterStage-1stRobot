@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -11,7 +9,6 @@ public class TestTeleOp extends OpMode {
         ElevatorSystem elevatorSystem;
         ElvatorErectionSystem elvatorErectionSystem;
         boolean RLBPressed = false;
-        EndPointSystem endPointSystem;
         boolean XPressed = false;
         boolean APressed = false;
         boolean BPressed = false;
@@ -22,16 +19,15 @@ public class TestTeleOp extends OpMode {
         hangingRobot hangingRobot;
 
 
-        YKS yks;
+        EndPointSytem yks;
 
     @Override
     public void init() {
         driveSystem =  new DriveSystem(hardwareMap, gamepad1);
         elevatorSystem = new ElevatorSystem(hardwareMap);
         elvatorErectionSystem = new ElvatorErectionSystem(hardwareMap);
-        yks = new YKS(hardwareMap);
+        yks = new EndPointSytem(hardwareMap);
         hangingRobot = new hangingRobot(hardwareMap);
-//        endPointSystem = new EndPointSystem((hardwareMap));
         launchSystem = new LaunchSystem(hardwareMap);
         telemetry.addData("endInit","");
         telemetry.update();
@@ -47,15 +43,7 @@ public class TestTeleOp extends OpMode {
         telemetry.addData("rm",elvatorErectionSystem.Rm.getCurrentPosition());
         telemetry.addData("yksRight",yks.yksRight.getPosition());
         telemetry.update();
-//        elevatorSystem.Extension(gamepad1.right_trigger - gamepad1.left_trigger);
 
-//        if((gamepad1.right_bumper || gamepad1.left_bumper) && !RLBPressed){
-//            RLBPressed = true;
-//            elvatorErectionSystem.elevatorHeight(gamepad1.right_bumper,gamepad1.left_bumper);
-//        } else if(RLBPressed){
-//            RLBPressed = false;
-//        }
-        //ציר המעלית
         if(gamepad1.right_bumper) {
             elvatorErectionSystem.elevatorUp();
         }
@@ -66,39 +54,21 @@ public class TestTeleOp extends OpMode {
             elvatorErectionSystem.elevatorToZero();
         }
 
-        //שאיבה
-//        if(gamepad1.x && !XPressed){
-//            XPressed = true;
-//            endPointSystem.sucking();
-//        } else if (!gamepad1.x) {
-//            XPressed = false;
-//        }
-        //פריקה
-//        if(gamepad1.a && !APressed){
-//            APressed = true;
-//            endPointSystem.spitting();
-//        } else if (!gamepad1.a) {
-//            APressed = false;
-//        }
-        //מטוס
         if(gamepad1.y && !YPressed){
             YPressed = true;
             launchSystem.LaunchP();
-        }
-        else if(!gamepad1.y){
+        } else if(!gamepad1.y){
             YPressed = false;
         }
 
-        if (gamepad1.a&&!APressed){
+        if (gamepad1.a && !APressed){
             APressed=true;
-            if(yks.yksLeft.getPosition()==0){
+            if(yks.yksLeft.getPosition() == 0){
                 yks.openYksLeft();
-            }else if(yks.yksLeft.getPosition()==0.5){
+            }else if(yks.yksLeft.getPosition() != 0){
                 yks.closeYksLeft();
-
             }
-        }
-        if(!gamepad1.a){
+        }else if(!gamepad1.a){
             APressed=false;
         }
         if (gamepad1.b&&!BPressed){

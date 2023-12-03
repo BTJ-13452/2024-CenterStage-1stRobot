@@ -3,19 +3,23 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class YKS {
+public class EndPointSytem {
+
+    final static double MIN_ERECTION_POSITION = 0.18;
+    final static double RIGHT_OPEN_POSITION = 0.6;
+    final static double LEFT_OPEN_POSITION = 0.65;
 
     Servo yksRight ;
     Servo yksLeft ;
     Servo erectionYks ;
 
 
-    public YKS(HardwareMap Map) {
+    public EndPointSytem(HardwareMap Map) {
         yksRight = Map.servo.get("yksRight");
         yksLeft = Map.servo.get("yksLeft");
         erectionYks = Map.servo.get("erectionYks");
 
-        erectionYks.setPosition(0.18);
+        erectionYks.setPosition(MIN_ERECTION_POSITION);
         yksRight.setPosition(1);
         yksLeft.setPosition(0);
     }
@@ -23,10 +27,12 @@ public class YKS {
         erectionYks.setPosition(erectionYks.getPosition() + 0.1);
     }
     public void closeErectionYks(){
-        erectionYks.setPosition(0);
+        erectionYks.setPosition(MIN_ERECTION_POSITION);
     }
+
+
     public void openYksRight (){
-        yksRight.setPosition(0.7);
+        yksRight.setPosition(RIGHT_OPEN_POSITION);
     }
 
     public void closeYksRight (){
@@ -34,7 +40,7 @@ public class YKS {
     }
 
     public void openYksLeft (){
-        yksLeft.setPosition(0.5);
+        yksLeft.setPosition(LEFT_OPEN_POSITION);
     }
 
     public void closeYksLeft (){

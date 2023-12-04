@@ -65,10 +65,16 @@ public class ElvatorErectionSystem {
     public void elevatorUp(){
         Lm.setPower(0.7);
         Rm.setPower(0.7);
+
+       Lm.setTargetPosition(Lm.getTargetPosition());
+        Rm.setTargetPosition(Rm.getTargetPosition());
     }
     public void elevatorDown(){
         Lm.setPower(-0.7);
         Rm.setPower(-0.7);
+
+       Lm.setTargetPosition(Lm.getTargetPosition());
+       Rm.setTargetPosition(Rm.getTargetPosition());
 
 //        LowerHeight(-1);
     }

@@ -83,13 +83,15 @@ public class TestTeleOp extends OpMode {
             BPressed=false;
         }
 
-
+//elevatorSystem
         if (gamepad1.right_trigger > 0)
             elevatorSystem.Extension(gamepad1.right_trigger);
         if (gamepad1.left_trigger > 0)
             elevatorSystem.LowerElevator(gamepad1.left_trigger);
         if (gamepad1.right_trigger == 0 && gamepad1.left_trigger == 0){
             elevatorSystem.StopElevator();
+
+
         }
         if (gamepad1.x && !XPressed){
             XPressed = true;

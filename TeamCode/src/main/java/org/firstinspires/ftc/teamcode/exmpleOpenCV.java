@@ -17,7 +17,6 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous
 public class exmpleOpenCV extends OpMode {
-
     OpenCvWebcam webcam1 = null;
     @Override
     public void init() {
@@ -36,7 +35,6 @@ public class exmpleOpenCV extends OpMode {
 
             @Override
             public void onError(int errorCode) {
-
             }
         });
 

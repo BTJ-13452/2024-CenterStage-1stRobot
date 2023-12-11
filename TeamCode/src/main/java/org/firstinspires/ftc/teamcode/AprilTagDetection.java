@@ -1,5 +1,20 @@
+//package org.firstinspires.ftc.teamcode;
+//
+//import android.util.Size;
+//
+//import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+//import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+//
+//import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+//import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+//import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+//import org.firstinspires.ftc.vision.VisionPortal;
+//import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+//
+//import java.util.List;
+//
 //@TeleOp
-//public class AprilTagDetection extends LinearOpMode{
+//public class AprilTagDetection extends LinearOpMode {
 //
 //    private AprilTagProcessor aprilTag;
 //
@@ -19,11 +34,10 @@
 //        visionPortal.close();
 //    }
 //
-//
 //    private void initAprilTag() {
 //        aprilTag = new AprilTagProcessor.Builder()
-//            .setOutputUnits(DistanceUnit.CM, AngleUnit.DEGREES)
-//            //.setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
+//                .setOutputUnits(DistanceUnit.CM, AngleUnit.DEGREES)
+//                //.setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
 //            .build();
 //
 //        VisionPortal.Builder builder = new VisionPortal.Builder();

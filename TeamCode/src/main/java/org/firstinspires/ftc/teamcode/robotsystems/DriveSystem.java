@@ -42,8 +42,8 @@ initYaw = angles.firstAngle;
         leftBackDrive= map.get(DcMotor.class, "DL");
         leftFrontDrive = map.get(DcMotor.class, "UL");
 
-        rightBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
 
         this.gamepad = gamepad;
     }

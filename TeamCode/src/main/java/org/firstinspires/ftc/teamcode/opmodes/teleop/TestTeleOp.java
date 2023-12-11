@@ -48,8 +48,6 @@ public class TestTeleOp extends OpMode {
 //        hardwareMap.servo.get("erectionYks").setPosition(0);
     }
 
-
-
     @Override
     public void loop()
     {
@@ -70,10 +68,6 @@ public class TestTeleOp extends OpMode {
         if(!gamepad1.left_bumper && !gamepad1.right_bumper){
             elvatorErectionSystem.elevatorToZero();
         }
-
-
-
-
 
         if(gamepad1.y && !YPressed){
             YPressed = true;
@@ -104,31 +98,25 @@ public class TestTeleOp extends OpMode {
 //            }
         }
 
-
-
-
         if(!gamepad1.b){
             BPressed=false;
         }
 
-//elevatorSystem
+
         if (gamepad1.right_trigger > 0)
             elevatorSystem.Extension(gamepad1.right_trigger);
         if (gamepad1.left_trigger > 0)
             elevatorSystem.LowerElevator(gamepad1.left_trigger);
         if (gamepad1.right_trigger == 0 && gamepad1.left_trigger == 0){
             elevatorSystem.StopElevator();
-
-
         }
+
+
         if (gamepad1.x && !XPressed){
             XPressed = true;
             hangingRobot.activateHanging();
         }if (!gamepad1.x)
             XPressed = false;
-
-
-
 
         if(gamepad1.dpad_up&&!upPressed){
             upPressed=true;
@@ -138,6 +126,15 @@ public class TestTeleOp extends OpMode {
             upPressed=false;
         }
         if(gamepad1.dpad_down){
+            yks.closeErectionYks();
+
+
+        }
+        if (gamepad1.left_stick_button){
+            yks.openYksRight();
+            yks.openYksLeft();
+            elvatorErectionSystem.LowerHeight(-0.7);
+            elevatorSystem.CloseElevator();
             yks.closeErectionYks();
         }
     }

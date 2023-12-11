@@ -19,7 +19,11 @@ public class ElevatorSystem {
     }
 
     public void Extension(double power){
-        elevator.setPower(-power);
+     if (elevator.getCurrentPosition()>-1600){
+         elevator.setPower(-power);
+     }
+    else elevator.setPower(0);
+
     }
 
     public void LowerElevator (double power){
@@ -37,6 +41,7 @@ public class ElevatorSystem {
             elevator.setPower(Speed);
        }
        elevator.setPower(0);
+       //elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
 }

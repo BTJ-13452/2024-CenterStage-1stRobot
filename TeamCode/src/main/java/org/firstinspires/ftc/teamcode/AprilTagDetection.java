@@ -35,7 +35,7 @@
 //    }
 //
 //    private void initAprilTag() {
-//        aprilTag = new AprilTagProcessor.Builder()
+//        aprilTag = new AprilTagProcessor.Builder().build()
 //                .setOutputUnits(DistanceUnit.CM, AngleUnit.DEGREES)
 //                //.setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
 //            .build();
@@ -43,7 +43,7 @@
 //        VisionPortal.Builder builder = new VisionPortal.Builder();
 //        builder.setCamera(hardwareMap.get(WebcamName.class, "AprilTagCamera"));
 //        builder.setCameraResolution(new Size(640, 480));
-//        builder.enableCameraMonitoring(true);
+//      // builder.enableCameraMonitoring(true);
 //        builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
 //        builder.setAutoStopLiveView(true);
 //        builder.addProcessor(aprilTag);

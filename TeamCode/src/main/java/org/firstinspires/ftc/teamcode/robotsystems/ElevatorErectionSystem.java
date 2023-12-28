@@ -67,16 +67,16 @@ public class ElevatorErectionSystem {
         Rm.setPower(power);
     }*/ //פונקציה של יהושע
 
-    public void elevatorUp(){
-        Lm.setPower(0.7);
-        Rm.setPower(0.7);
+    public void elevatorUp(double power){
+        Lm.setPower(power);
+        Rm.setPower(power);
 
         Lm.setTargetPosition(Lm.getTargetPosition());
         Rm.setTargetPosition(Rm.getTargetPosition());
     }
-    public void elevatorDown(){
-        Lm.setPower(-0.7);
-        Rm.setPower(-0.7);
+    public void elevatorDown(double power){
+        Lm.setPower(-power);
+        Rm.setPower(-power);
 
         Lm.setTargetPosition(Lm.getTargetPosition());
         Rm.setTargetPosition(Rm.getTargetPosition());

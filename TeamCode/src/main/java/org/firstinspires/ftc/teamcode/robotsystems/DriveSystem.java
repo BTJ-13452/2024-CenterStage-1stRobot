@@ -48,11 +48,8 @@ initYaw = angles.firstAngle;
         this.gamepad = gamepad;
     }
 
-    public DriveSystem(HardwareMap map){
-
-    }
-
     public void Drive() {
+
         angles=imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         adjustedYaw = angles.firstAngle-initYaw;

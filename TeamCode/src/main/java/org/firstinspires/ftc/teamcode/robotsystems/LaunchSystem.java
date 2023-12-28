@@ -14,8 +14,12 @@ public class LaunchSystem {
 
         launch.setDirection(DcMotorSimple.Direction.REVERSE);
     }
-    public void LaunchP(){
-        launch.setPower(1);
+    public void Activate(){
+        if (launch.getPower()==0){
+            launch.setPower(1);
+        } else if(launch.getPower()==1){
+            launch.setPower(0);
+        }
     }
 
 }

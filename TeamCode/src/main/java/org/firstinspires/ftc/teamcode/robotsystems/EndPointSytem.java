@@ -15,7 +15,7 @@ public class EndPointSytem {
     Servo erectionYks;
 
 
-    public EndPointSytem(HardwareMap Map) {
+    public EndPointSytem(HardwareMap Map)  {                                                                                                                                                                                                                                           
         yksRight = Map.servo.get("yksRight");
         yksLeft = Map.servo.get("yksLeft");
         erectionYks = Map.servo.get("erectionYks");

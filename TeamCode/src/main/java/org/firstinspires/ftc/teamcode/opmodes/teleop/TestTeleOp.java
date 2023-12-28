@@ -36,7 +36,7 @@ public class TestTeleOp extends OpMode {
     public void init() {
         driveSystem =  new DriveSystem(hardwareMap, gamepad1);
         elevatorSystem = new ElevatorSystem(hardwareMap);
-       elvatorErectionSystem = new ElevatorErectionSystem(hardwareMap);
+        elvatorErectionSystem = new ElevatorErectionSystem(hardwareMap);
         yks = new EndPointSytem(hardwareMap);
         hangingRobot = new hangingRobot(hardwareMap);
         launchSystem = new LaunchSystem(hardwareMap);
@@ -59,19 +59,45 @@ public class TestTeleOp extends OpMode {
         telemetry.update();
 
 
+//        if(gamepad1.right_bumper) {
+//            elvatorErectionSystem.elevatorUp();
+//        }
+//        if(gamepad1.left_bumper) {
+//            elvatorErectionSystem.elevatorDown();
+//        }
+//        if(!gamepad1.left_bumper && !gamepad1.right_bumper){
+//            elvatorErectionSystem.elevatorToZero();
+//        }
+//
+//        if (gamepad1.right_trigger > 0)
+//            elevatorSystem.Extension(gamepad1.right_trigger);
+//        if (gamepad1.left_trigger > 0)
+//            elevatorSystem.LowerElevator(gamepad1.left_trigger);
+//        if (gamepad1.right_trigger == 0 && gamepad1.left_trigger == 0){
+//            elevatorSystem.StopElevator();
+//        }
+
         if(gamepad1.right_bumper) {
-            elvatorErectionSystem.elevatorUp();
+            elevatorSystem.Extension();
         }
         if(gamepad1.left_bumper) {
-            elvatorErectionSystem.elevatorDown();
+            elevatorSystem.LowerElevator();
         }
         if(!gamepad1.left_bumper && !gamepad1.right_bumper){
-            elvatorErectionSystem.elevatorToZero();
+            elevatorSystem.StopElevator();
         }
+
+        if (gamepad1.right_trigger > 0)
+            elvatorErectionSystem.elevatorUp(gamepad1.right_trigger);
+        if (gamepad1.left_trigger > 0)
+            elvatorErectionSystem.elevatorDown(gamepad1.left_trigger);
+        if (gamepad1.right_trigger == 0 && gamepad1.left_trigger == 0){
+            elvatorErectionSystem.elevatorToZero();
+           }
 
         if(gamepad1.y && !YPressed){
             YPressed = true;
-            launchSystem.LaunchP();
+            launchSystem.Activate();
         } else if(!gamepad1.y){
             YPressed = false;
         }
@@ -102,14 +128,6 @@ public class TestTeleOp extends OpMode {
             BPressed=false;
         }
 
-
-        if (gamepad1.right_trigger > 0)
-            elevatorSystem.Extension(gamepad1.right_trigger);
-        if (gamepad1.left_trigger > 0)
-            elevatorSystem.LowerElevator(gamepad1.left_trigger);
-        if (gamepad1.right_trigger == 0 && gamepad1.left_trigger == 0){
-            elevatorSystem.StopElevator();
-        }
 
 
         if (gamepad1.x && !XPressed){

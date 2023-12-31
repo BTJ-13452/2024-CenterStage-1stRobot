@@ -9,55 +9,55 @@ import org.firstinspires.ftc.teamcode.robotsystems.hangingRobot;
 import org.firstinspires.ftc.teamcode.robotsystems.DriveSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.ElevatorSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.ElevatorErectionSystem;
-import org.firstinspires.ftc.teamcode.robotsystems.EndPointSytem;
+import org.firstinspires.ftc.teamcode.robotsystems.EndPointSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.LaunchSystem;
 
+/**
+ * The TestTeleOp class represents the TeleOp mode for testing various robot systems.
+ */
 @TeleOp
 public class TestTeleOp extends OpMode {
-        DriveSystem driveSystem;
-        ElevatorSystem elevatorSystem;
-    ElevatorErectionSystem elvatorErectionSystem;
-        boolean RLBPressed = false;
-        boolean XPressed = false;
-        boolean APressed = false;
-        boolean BPressed = false;
-        boolean upPressed = false;
-        boolean YPressed = false;
-        boolean RBPressed = false;
-        boolean LBPressed = false;
+    private DriveSystem driveSystem;
+    private ElevatorSystem elevatorSystem;
+    private ElevatorErectionSystem elvatorErectionSystem;
+    private boolean RLBPressed = false;
+    private boolean XPressed = false;
+    private boolean APressed = false;
+    private boolean BPressed = false;
+    private boolean upPressed = false;
+    private boolean YPressed = false;
+    private boolean RBPressed = false;
+    private boolean LBPressed = false;
 
-        hangingRobot hangingRobot;
-    LaunchSystem launchSystem;
+    private hangingRobot hangingRobot;
+    private LaunchSystem launchSystem;
 
-
-        EndPointSytem yks;
+    private EndPointSystem yks;
 
     @Override
     public void init() {
-        driveSystem =  new DriveSystem(hardwareMap, gamepad1);
+        driveSystem = new DriveSystem(hardwareMap, gamepad1);
         elevatorSystem = new ElevatorSystem(hardwareMap);
         elvatorErectionSystem = new ElevatorErectionSystem(hardwareMap);
-        yks = new EndPointSytem(hardwareMap);
+        yks = new EndPointSystem(hardwareMap);
         hangingRobot = new hangingRobot(hardwareMap);
         launchSystem = new LaunchSystem(hardwareMap);
 
         telemetry.addData("using", DcMotor.RunMode.RUN_USING_ENCODER.equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER));
-        telemetry.addData("endInit","");
+        telemetry.addData("endInit", "");
         telemetry.update();
 
 //        hardwareMap.servo.get("erectionYks").setPosition(0);
     }
 
     @Override
-    public void loop()
-    {
+    public void loop() {
         driveSystem.Drive();
 
 //        telemetry.addData("lm",elvatorErectionSystem.Lm.getCurrentPosition());
 //        telemetry.addData("rm",elvatorErectionSystem.Rm.getCurrentPosition());
 //        telemetry.addData("yksRight",yks.yksRight.getPosition());
         telemetry.update();
-
 
 //        if(gamepad1.right_bumper) {
 //            elvatorErectionSystem.elevatorUp();
@@ -77,13 +77,13 @@ public class TestTeleOp extends OpMode {
 //            elevatorSystem.StopElevator();
 //        }
 
-        if(gamepad1.right_bumper) {
+        if (gamepad1.right_bumper) {
             elevatorSystem.Extension();
         }
-        if(gamepad1.left_bumper) {
+        if (gamepad1.left_bumper) {
             elevatorSystem.LowerElevator();
         }
-        if(!gamepad1.left_bumper && !gamepad1.right_bumper){
+        if (!gamepad1.left_bumper && !gamepad1.right_bumper) {
             elevatorSystem.StopElevator();
         }
 
@@ -91,31 +91,31 @@ public class TestTeleOp extends OpMode {
             elvatorErectionSystem.elevatorUp(gamepad1.right_trigger);
         if (gamepad1.left_trigger > 0)
             elvatorErectionSystem.elevatorDown(gamepad1.left_trigger);
-        if (gamepad1.right_trigger == 0 && gamepad1.left_trigger == 0){
+        if (gamepad1.right_trigger == 0 && gamepad1.left_trigger == 0) {
             elvatorErectionSystem.elevatorToZero();
-           }
+        }
 
-        if(gamepad1.y && !YPressed){
+        if (gamepad1.y && !YPressed) {
             YPressed = true;
             launchSystem.Activate();
-        } else if(!gamepad1.y){
+        } else if (!gamepad1.y) {
             YPressed = false;
         }
 
-        if (gamepad1.a && !APressed){
-            APressed=true;
+        if (gamepad1.a && !APressed) {
+            APressed = true;
             yks.YksLactive();
 //            if(yks.yksLeft.getPosition() == 0){
 //                yks.openYksLeft();
 //            }else if(yks.yksLeft.getPosition() != 0){
 //                yks.closeYksLeft();
 //            }
-        }else if(!gamepad1.a){
-            APressed=false;
+        } else if (!gamepad1.a) {
+            APressed = false;
         }
 
-        if (gamepad1.b&&!BPressed){
-            BPressed=true;
+        if (gamepad1.b && !BPressed) {
+            BPressed = true;
             yks.YksRactive();
 //            if(yks.yksRight.getPosition()==1){
 //                yks.openYksRight();
@@ -124,41 +124,42 @@ public class TestTeleOp extends OpMode {
 //            }
         }
 
-        if(!gamepad1.b){
-            BPressed=false;
+        if (!gamepad1.b) {
+            BPressed = false;
         }
 
-
-
-        if (gamepad1.x && !XPressed){
+        if (gamepad1.x && !XPressed) {
             XPressed = true;
             hangingRobot.activateHanging();
-        }if (!gamepad1.x)
+        }
+        if (!gamepad1.x)
             XPressed = false;
 
-        if(gamepad1.dpad_up&&!upPressed){
-            upPressed=true;
+        if (gamepad1.dpad_up && !upPressed) {
+            upPressed = true;
             yks.openErectionYks();
         }
-        if(!gamepad1.dpad_up){
-            upPressed=false;
+        if (!gamepad1.dpad_up) {
+            upPressed = false;
         }
-        if(gamepad1.dpad_down){
+        if (gamepad1.dpad_down) {
             yks.closeErectionYks();
-
-
         }
-        if (gamepad1.left_stick_button){
+        if (gamepad1.left_stick_button) {
             yks.openYksRight();
             yks.openYksLeft();
             elvatorErectionSystem.LowerHeight(-0.7);
             elevatorSystem.CloseElevator();
             yks.closeErectionYks();
         }
+        if (gamepad2.start){
+            stop();
+            init();
+        }
     }
 
     @Override
-    public void stop(){
+    public void stop() {
         elvatorErectionSystem.StopEndGame();
     }
 }

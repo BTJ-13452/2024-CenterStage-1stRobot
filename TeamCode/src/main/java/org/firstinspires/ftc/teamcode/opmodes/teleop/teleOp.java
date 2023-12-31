@@ -3,27 +3,27 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
 import org.firstinspires.ftc.teamcode.roadrunner.util.Encoder;
 import org.firstinspires.ftc.teamcode.robotsystems.DriveSystem;
 
+/**
+ * The teleOp class represents a TeleOp mode for controlling a robot drive system.
+ */
 @TeleOp
 public class teleOp extends OpMode {
 
-    DriveSystem driveSystem;
+    private DriveSystem driveSystem;
 
-    DcMotor leftEncoder;
-    DcMotor rightEncoder;
-    DcMotor frontEncoder;
+    private DcMotor leftEncoder;
+    private DcMotor rightEncoder;
+    private DcMotor frontEncoder;
 
     @Override
     public void init() {
-
         driveSystem = new DriveSystem(hardwareMap, gamepad1);
-
 
         leftEncoder = hardwareMap.get(DcMotorEx.class, "DL");
         rightEncoder = hardwareMap.get(DcMotorEx.class, "DR");
@@ -34,8 +34,8 @@ public class teleOp extends OpMode {
     public void loop() {
         driveSystem.Drive();
 
-        telemetry.addData(" left",leftEncoder.getCurrentPosition());
-        telemetry.addData(" right",rightEncoder.getCurrentPosition());
-        telemetry.addData(" front",frontEncoder.getCurrentPosition());
+        telemetry.addData(" left", leftEncoder.getCurrentPosition());
+        telemetry.addData(" right", rightEncoder.getCurrentPosition());
+        telemetry.addData(" front", frontEncoder.getCurrentPosition());
     }
 }

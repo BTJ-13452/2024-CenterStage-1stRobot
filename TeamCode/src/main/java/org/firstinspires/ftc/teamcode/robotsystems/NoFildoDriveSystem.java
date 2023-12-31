@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.robotsystems;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class NoFildoDriveSystem {
 
@@ -13,7 +16,13 @@ public class NoFildoDriveSystem {
 
     Gamepad gamepad;
     double driverAngle;
-    double targetAngle ;
+    double angle;
+    BNO055IMU imu;
+    Orientation lastAngles = new Orientation();
+
+    double power;
+
+    double rotation;
 
 
     public NoFildoDriveSystem(HardwareMap map, Gamepad gamepad){
@@ -26,7 +35,7 @@ public class NoFildoDriveSystem {
         driverAngle = 0;
     }
 
-    public void drive(double power, double angle, double rotation) {
+    public void drive() {
 
 
 
@@ -49,7 +58,7 @@ public class NoFildoDriveSystem {
         }
 
 
-        targetAngle = driverAngle;
+        angle = driverAngle;
 
         double y = -(power * Math.sin(angle));
         double x = -(power * Math.cos(angle));

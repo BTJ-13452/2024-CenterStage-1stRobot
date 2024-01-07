@@ -20,6 +20,7 @@ public class TestTeleOp extends OpMode {
     private DriveSystem driveSystem;
     private ElevatorSystem elevatorSystem;
     private ElevatorErectionSystem elvatorErectionSystem;
+
     private boolean RLBPressed = false;
     private boolean XPressed = false;
     private boolean APressed = false;
@@ -28,6 +29,7 @@ public class TestTeleOp extends OpMode {
     private boolean YPressed = false;
     private boolean RBPressed = false;
     private boolean LBPressed = false;
+    private boolean G2BPressed = false;
 
     private hangingRobot hangingRobot;
     private LaunchSystem launchSystem;
@@ -155,6 +157,21 @@ public class TestTeleOp extends OpMode {
         if (gamepad2.start){
             stop();
             init();
+        }
+
+
+
+
+        if (gamepad2.b &&! G2BPressed){
+            G2BPressed = true;
+
+            hangingRobot.activateHanging();
+            elevatorSystem.CloseElevator();
+
+
+
+        }else if(!gamepad2.b){
+            G2BPressed = false;
         }
     }
 

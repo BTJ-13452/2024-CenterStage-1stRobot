@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  */
 public class EndPointSystem {
 
-    final static double MIN_ERECTION_POSITION = 0.38;
+    final static double MIN_ERECTION_POSITION = 0.0;
     final static double MAX_ERECTION_POSITION = 0.95;
     final static double RIGHT_OPEN_POSITION = 0.6;
     final static double LEFT_OPEN_POSITION = 0.65;

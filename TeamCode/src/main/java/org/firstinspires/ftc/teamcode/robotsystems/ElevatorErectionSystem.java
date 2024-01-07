@@ -12,8 +12,9 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
  */
 public class ElevatorErectionSystem {
 
-    final int[] positions = new int[]{0, 20, 40, 60};
-    int position = 0;
+
+    final int HEIGHT_OF_HANG = 1000; //TODO: לעשות מדידות
+
     public DcMotor Lm;
     public DcMotor Rm;
     TouchSensor magneticSwitch;
@@ -85,6 +86,11 @@ public class ElevatorErectionSystem {
         }
         Lm.setPower(0);
         Rm.setPower(0);
+    }
+
+    public void setPositionToHanging(){
+//        Lm.setTargetPosition();
+//        Rm.setTargetPosition();
     }
 
     /**

@@ -148,12 +148,18 @@ public class TestTeleOp extends OpMode {
             yks.closeErectionYks();
         }
         if (gamepad1.left_stick_button) {
-            yks.openYksRight();
-            yks.openYksLeft();
-            elvatorErectionSystem.LowerHeight(-0.7);
-            elevatorSystem.CloseElevator();
-            yks.closeErectionYks();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    yks.openYksRight();
+                    yks.openYksLeft();
+                    elvatorErectionSystem.LowerHeight(-0.7);
+                    elevatorSystem.CloseElevator();
+                    yks.closeErectionYks();
+                }
+            }).start();
         }
+
         if (gamepad2.start){
             stop();
             init();
@@ -170,7 +176,8 @@ public class TestTeleOp extends OpMode {
 
 
 
-        }else if(!gamepad2.b){
+        }
+        else if(!gamepad2.b){
             G2BPressed = false;
         }
     }

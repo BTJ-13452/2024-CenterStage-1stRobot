@@ -12,7 +12,7 @@ public DriveSystem drive;
     public void runOpMode() throws InterruptedException {
         Init();
         waitForStart();
-        drive.opModeIsActive=true;
+        drive.opModeIsActive = true;
         drive.driveByEncoder(0.5,0,70,0);
 
     }
@@ -20,4 +20,5 @@ public DriveSystem drive;
         drive = new DriveSystem(hardwareMap);
 
     }
+
 }

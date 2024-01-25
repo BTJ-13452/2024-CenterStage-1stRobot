@@ -42,18 +42,19 @@ public DriveSystem(HardwareMap map){
 
     leftFrontDrive = map.dcMotor.get("UL");
     leftBackDrive = map.dcMotor.get("DL");
-    leftFrontDrive = map.dcMotor.get("UR");
-    leftBackDrive = map.dcMotor.get("DR");
+    rightFrontDrive = map.dcMotor.get("UR");
+    rightBackDrive = map.dcMotor.get("DR");
     leftFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
     leftBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-    leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
     leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
     leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
     leftBackDrive.setTargetPosition(0);
     leftBackDrive.setTargetPosition(0);

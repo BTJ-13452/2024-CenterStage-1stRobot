@@ -4,7 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
@@ -20,10 +19,10 @@ public class Processor implements VisionProcessor {
 
     OpMode opMode;
 
-    Mat leftCrop;
+    Mat rightCrop;
 
     Mat middleCrop;
-    double leftAvg;
+    double rightAvg;
     double middleAvg;
     int place;
     Paint mainPaint;
@@ -40,37 +39,46 @@ public class Processor implements VisionProcessor {
     }
 
     @Override
-    public Object processFrame(Mat frame, long captureTimeNanos) {
-//        rightCrop = frame.submat(new Rect(0, 0, frame.width()/2, frame.height()));
+    public   Object processFrame(Mat frame, long captureTimeNanos) {
+        middleCrop = frame.submat(new Rect(30, 100, 350, 250));
+        rightCrop = frame.submat(new Rect(450, 100, 185, 250));
 //        leftCrop = frame.submat(new Rect(frame.width()/2, 0, frame.width()/2, frame.height()));
-//        leftCrop = frame.submat(new Rect(frame.width()/2, 0, frame.width()/2, frame.height()));
-        int frameThird = (int) frame.width()/3;
+
         opMode.telemetry.addData("height: ", frame.height());
         opMode.telemetry.addData("width: ", frame.width());
-        Point point1 = new Point(100,100);// שמאל למעלה
-        Point point2 = new Point(500,300);//ימין למטה
+        //זיהוי  אמצעי
+        Point point1 = new Point(30,100);// שמאל למעלה
+        Point point2 = new Point(400,350);//ימין למטה
         Scalar color = new Scalar(64,64,64);
         int thickness = 10;
         Imgproc.rectangle(frame, point1,point2,color,thickness);
+
+        //זיהוי צד ימין
+        Point point3 = new Point(450,100);// שמאל למעלה
+        Point point4 = new Point(650,350);//ימין למטה
+        Scalar color1 = new Scalar(64,44,64);
+        Imgproc.rectangle(frame, point3,point4,color1,thickness);
+
+
 //
 //        leftCrop = frame.submat(new Rect(0, 0, frame.width()/3, frame.height()/3));
 //        middleCrop = frame.submat(new Rect(frame.width()/3 +50 , 0, frame.width()/3 +40, frame.height()/3));
 //
 //
-//        Core.extractChannel(leftCrop, leftCrop, 0);
-//        Core.extractChannel(middleCrop, middleCrop, 0);
+        Core.extractChannel(rightCrop, rightCrop, 0);
+        Core.extractChannel(middleCrop, middleCrop, 0);
 //
-//        leftAvg = Core.mean(leftCrop).val[0];
-//        middleAvg = Core.mean(middleCrop).val[0];
+        rightAvg = Core.mean(rightCrop).val[0];
+        middleAvg = Core.mean(middleCrop).val[0];
 //
-//        if (leftAvg> middleAvg) {
-//            opMode.telemetry.addData("Side", "Left");
-//            place =0;
-//        } else if (middleAvg>leftAvg) {
-//            opMode.telemetry.addData("Side", "Right");
-//        } else if(leftCrop.empty() || middleCrop.empty()) {
-//            opMode.telemetry.addData("Side", "right");
-//        }
+        if (rightAvg> middleAvg) {
+            opMode.telemetry.addData("Side", "Right");
+            place =0;
+        } else if (middleAvg>rightAvg) {
+            opMode.telemetry.addData("Side", "middle");
+        } else if(rightCrop.empty() || middleCrop.empty()) {
+            opMode.telemetry.addData("Side", "empty");
+        }
         opMode.telemetry.update();
 
         return frame;

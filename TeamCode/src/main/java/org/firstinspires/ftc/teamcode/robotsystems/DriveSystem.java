@@ -44,22 +44,30 @@ public DriveSystem(HardwareMap map){
     leftBackDrive = map.dcMotor.get("DL");
     rightFrontDrive = map.dcMotor.get("UR");
     rightBackDrive = map.dcMotor.get("DR");
+
     leftFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
     leftBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
+    leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+    rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
     leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
-    leftBackDrive.setTargetPosition(0);
-    leftBackDrive.setTargetPosition(0);
     leftFrontDrive.setTargetPosition(0);
-    leftFrontDrive.setTargetPosition(0);
+    leftBackDrive.setTargetPosition(0);
+    rightFrontDrive.setTargetPosition(0);
+    rightBackDrive.setTargetPosition(0);
 
     runTime.reset();
 }
@@ -132,10 +140,10 @@ public DriveSystem(HardwareMap map){
         // encoder = CM / 0.0561
         double encoder = CM / 0.0784;
 
-        leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         runTime.reset();
         double y = -(power * Math.sin(Math.toRadians(-angleDegrees) + Math.PI / 2));
         double x = -(power * Math.cos(Math.toRadians(-angleDegrees) + Math.PI / 2));
@@ -153,15 +161,16 @@ public DriveSystem(HardwareMap map){
         double backRightEncoder = encoder;
 
 
-        while ((Math.abs(leftFrontDrive.getCurrentPosition()) < frontRightEncoder || Math.abs(leftBackDrive.getCurrentPosition()) < backRightEncoder)&&opModeIsActive) {
+
+        while ((Math.abs(rightFrontDrive.getCurrentPosition()) < Math.abs(frontRightEncoder) || Math.abs(rightBackDrive.getCurrentPosition()) < backRightEncoder)&&opModeIsActive) {
             rx = -(angleAheadDegrees - getAngle()) * 0.01;
             denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
 
-            if ((leftFrontDrive.getCurrentPosition() == 0 && leftBackDrive.getCurrentPosition() == 0 && runTime.seconds() > 1)&&  opModeIsActive) {
+            if ((rightFrontDrive.getCurrentPosition() == 0 && rightBackDrive.getCurrentPosition() == 0 && runTime.seconds() > 1)&&  opModeIsActive) {
                 leftFrontDrive.setPower(0);
                 leftBackDrive.setPower(0);
-                leftFrontDrive.setPower(0);
-                leftBackDrive.setPower(0);
+                rightFrontDrive.setPower(0);
+                rightBackDrive.setPower(0);
             }
             frontLeftPower = (y + x + rx) / denominator;
             backLeftPower = (y - x + rx) / denominator;
@@ -170,14 +179,14 @@ public DriveSystem(HardwareMap map){
 
             leftFrontDrive.setPower(frontLeftPower);
             leftBackDrive.setPower(backLeftPower);
-            leftFrontDrive.setPower(frontRightPower);
-            leftBackDrive.setPower(backRightPower);
+            rightFrontDrive.setPower(frontRightPower);
+            rightBackDrive.setPower(backRightPower);
         }
 
         leftFrontDrive.setPower(0);
         leftBackDrive.setPower(0);
-        leftFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
     }
     public double getAngle() {
         // We experimentally determined the Z axis is the axis we want to use for heading angle.
@@ -197,5 +206,12 @@ public DriveSystem(HardwareMap map){
         globalAngle += deltaAngle;
         lastAngles = angles;
         return -globalAngle;
+    }
+    public void TestOnMotor(){
+    leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    leftFrontDrive.setTargetPosition(10000);
+    leftFrontDrive.setPower(1);
+    leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 }

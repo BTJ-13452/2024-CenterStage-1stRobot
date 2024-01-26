@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.vision.VisionPortal;
+
 /**
  * The ElevatorErectionSystem class represents the robot's elevator erection system.
  */
@@ -107,6 +109,27 @@ public class ElevatorErectionSystem {
             }
         }
     }
+
+    public void erectionTicks(int tick) {
+        Rm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+       Lm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+       Rm.setTargetPosition(tick);
+        Lm.setTargetPosition(tick);
+
+        Rm.setPower(1);
+        Lm.setPower(1);
+
+        Rm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Lm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+    }
+    public int getPosition(){
+        return Rm.getTargetPosition();
+    }
+
+
     public void EStop() {
         Lm.setPower(0);
         Rm.setPower(0);

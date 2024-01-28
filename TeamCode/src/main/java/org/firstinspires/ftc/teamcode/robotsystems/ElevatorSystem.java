@@ -24,6 +24,8 @@ public class ElevatorSystem {
         elevator = map.dcMotor.get("Elevator");
         magneticSwitch = map.get(TouchSensor.class, "elevatorSwitch");
         elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         CloseElevator();
     }
 
@@ -36,6 +38,14 @@ public class ElevatorSystem {
         } else {
             elevator.setPower(0);
         }
+    }
+
+    public void OpenElevator(int ticks) {
+        while (elevator.getCurrentPosition() > -ticks) {
+            elevator.setPower(-0.8);
+        }
+            elevator.setPower(0);
+
     }
 
     /**

@@ -167,8 +167,7 @@ public class TestTeleOp extends OpMode {
 
             hangingRobot.activateHanging();
             elevatorSystem.CloseElevator();
-
-
+            elvatorErectionSystem.erctionForHanging();
 
         }else if(!gamepad2.b){
             G2BPressed = false;

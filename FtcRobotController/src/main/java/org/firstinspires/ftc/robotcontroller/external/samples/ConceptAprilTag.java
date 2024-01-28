@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -111,14 +112,14 @@ public class ConceptAprilTag extends LinearOpMode {
 //            .setDrawAxes(false)
 //            .setDrawCubeProjection(false)
 //            .setDrawTagOutline(true)
-//            .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
-//            .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
-//            .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES)
+            .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
+            .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
+            .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES)
 //
 //             == CAMERA CALIBRATION ==
 //             If you do not manually specify calibration parameters, the SDK will attempt
 //             to load a predefined calibration for your camera.
-//            .setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
+           .setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
 //
 //             ... these parameters are fx, fy, cx, cy.
 

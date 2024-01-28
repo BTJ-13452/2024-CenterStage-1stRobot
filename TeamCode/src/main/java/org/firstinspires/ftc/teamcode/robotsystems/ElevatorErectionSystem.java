@@ -51,6 +51,15 @@ public class ElevatorErectionSystem {
         Rm.setTargetPosition(Rm.getTargetPosition());
     }
 
+    public void erctionForHanging() {
+      Lm.setTargetPosition(HEIGHT_OF_HANG);
+      Rm.setTargetPosition(HEIGHT_OF_HANG);
+
+      Lm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+      Rm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+
     /**
      * Moves the elevator down with the specified power.
      *
@@ -72,6 +81,8 @@ public class ElevatorErectionSystem {
         Rm.setPower(0);
         Lm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Rm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
     }
 
     /**

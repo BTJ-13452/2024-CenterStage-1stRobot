@@ -117,8 +117,8 @@ public class ElevatorErectionSystem {
        Rm.setTargetPosition(tick);
         Lm.setTargetPosition(tick);
 
-        Rm.setPower(1);
-        Lm.setPower(1);
+        Rm.setPower(0.5);
+        Lm.setPower(0.5);
 
         Rm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Lm.setMode(DcMotor.RunMode.RUN_TO_POSITION);

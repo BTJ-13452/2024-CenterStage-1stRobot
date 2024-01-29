@@ -27,7 +27,7 @@ public class EndPointSystem {
         yksLeft = Map.servo.get("yksLeft");
         erectionYks = Map.servo.get("erectionYks");
 
-       // erectionYks.setPosition(MIN_ERECTION_POSITION);
+        erectionYks.setPosition(MAX_ERECTION_POSITION);
         yksRight.setPosition(1);
         yksLeft.setPosition(0);
     }

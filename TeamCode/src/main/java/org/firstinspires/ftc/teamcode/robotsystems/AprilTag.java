@@ -20,7 +20,7 @@ public class AprilTag{
     private AprilTagProcessor aprilTag;
     private VisionPortal visionPortal;
 
-    public void AprilTag(HardwareMap map){
+    public AprilTag(HardwareMap map){
         aprilTag = new AprilTagProcessor.Builder()
                 .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
                 .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())

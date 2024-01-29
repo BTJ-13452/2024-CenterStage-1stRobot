@@ -13,7 +13,7 @@ public class teleopeitay extends OpMode {
 
     @Override
     public void init() {
-        driveSystem =  new DriveSystem(hardwareMap, gamepad1);
+        driveSystem =  new DriveSystem(hardwareMap, gamepad1,0);
 
         telemetry.addData("endInit","");
         telemetry.update();

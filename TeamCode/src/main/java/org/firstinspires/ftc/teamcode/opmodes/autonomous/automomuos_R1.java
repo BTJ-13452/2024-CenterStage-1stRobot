@@ -1,19 +1,28 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
+import android.hardware.Sensor;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.opmodes.autonomous.openCV.Processor;
+import org.firstinspires.ftc.teamcode.opmodes.teleop.TestTeleOp;
+import org.firstinspires.ftc.teamcode.robotsystems.AprilTag;
 import org.firstinspires.ftc.teamcode.robotsystems.DriveSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.ElevatorErectionSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.ElevatorSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.EndPointSystem;
+import org.firstinspires.ftc.teamcode.robotsystems.hangingRobot;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 @Autonomous
 public class automomuos_R1 extends LinearOpMode {
@@ -34,16 +43,63 @@ public class automomuos_R1 extends LinearOpMode {
 
     private EndPointSystem yks;
 
-    int type = 1;
+    hangingRobot hanging ;
+    Processor processor = new Processor(this);
+    VisionPortal myVisionPortal;
 
+    SensorInput aprilTag6;
+
+    int type = 1;
     @Override
     public void runOpMode() throws InterruptedException {
         Init();
+        myVisionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), processor);
+        aprilTag6 = new SensorInput() {
+
+            AprilTag aprilTag = new AprilTag(hardwareMap);
+            @Override
+            public boolean verifySensor() {
+                int counter = 0;
+                boolean current1 = false;
+                boolean current2 = false;
+                while(counter < 1 && opModeIsActive()){
+                    for (AprilTagDetection detection: aprilTag.getAprilTagDetection()) {
+                        if(detection.id == 6) {
+                            double r = detection.ftcPose.x ;
+                            telemetry.addData("X", r);
+                            telemetry.update();
+                            current1 = r < 0.25;
+                        }
+                    }
+                    for (AprilTagDetection detection: aprilTag.getAprilTagDetection()) {
+                        if (detection.id == 6) {
+                            double r = detection.ftcPose.x;
+                            current2 = r < 0.25;
+                        }
+                    }
+
+                    if(current1 == current2 && current1){
+                        counter++;
+                    }
+                    else{
+                        counter = 0;
+                    }
+                }
+                return current1;
+            }
+        };
+
+        do{
+            type = processor.getPlace();
+        } while (opModeInInit());
+
+
         waitForStart();
         //  drive.opModeIsActive = true;
         // drive.driveByEncoder(0.3,0,90,0);
         if (type == 1) {
             driveByEncoder(0.5, 135, 90, 90);
+            driveBySensor(0.5,90,0, aprilTag6);
             sleep(1000);
             elvatorErectionSystem.LowerHeight(-0.5);
             sleep(1000);
@@ -165,6 +221,8 @@ public class automomuos_R1 extends LinearOpMode {
         motorFrontLeft = hardwareMap.dcMotor.get("UL");
         motorFrontRight = hardwareMap.dcMotor.get("UR");
 
+        TestTeleOp.driveSystem = new DriveSystem(hardwareMap,gamepad1,180);
+
 
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
@@ -175,6 +233,8 @@ public class automomuos_R1 extends LinearOpMode {
         elvatorErectionSystem = new ElevatorErectionSystem(hardwareMap);
 
         elevatorSystem = new ElevatorSystem(hardwareMap);
+
+        hanging = new hangingRobot(hardwareMap);
     }
 
 //    public void driveByEncoder(double power, double angleDegrees, int CM, int angleAheadDegrees) {
@@ -372,5 +432,52 @@ public class automomuos_R1 extends LinearOpMode {
         globalAngle += deltaAngle;
         lastAngles = angles;
         return -globalAngle;
+    }
+
+    public void driveBySensor(double power, double angleDegrees, int angleAheadDegrees, SensorInput sensor) {
+        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        runTime.reset();
+
+        double y = -(power * Math.sin(Math.toRadians(-angleDegrees) + Math.PI / 2));
+        double x = -(power * Math.cos(Math.toRadians(-angleDegrees) + Math.PI / 2));
+        double rx = -(angleAheadDegrees - getAngle()) * 0.01;
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+        double frontLeftPower = (y + x + rx) / denominator;
+        double backLeftPower = (y - x + rx) / denominator;
+        double frontRightPower = (y - x - rx) / denominator;
+        double backRightPower = (y + x - rx) / denominator;
+
+        while (sensor.verifySensor() && opModeIsActive()) {
+            rx = -(angleAheadDegrees - getAngle()) * 0.01;
+            denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+
+            if (motorFrontRight.getCurrentPosition() == 0 && motorBackRight.getCurrentPosition() == 0 && runTime.seconds() > 1) {
+                motorFrontLeft.setPower(0);
+                motorBackLeft.setPower(0);
+                motorFrontRight.setPower(0);
+                motorBackRight.setPower(0);
+            }
+            frontLeftPower = (y + x + rx) / denominator;
+            backLeftPower = (y - x + rx) / denominator;
+            frontRightPower = (y - x - rx) / denominator;
+            backRightPower = (y + x - rx) / denominator;
+
+            motorFrontLeft.setPower(frontLeftPower);
+            motorBackLeft.setPower(backLeftPower);
+            motorFrontRight.setPower(frontRightPower);
+            motorBackRight.setPower(backRightPower);
+        }
+
+        motorFrontLeft.setPower(0);
+        motorBackLeft.setPower(0);
+        motorFrontRight.setPower(0);
+        motorBackRight.setPower(0);
+    }
+
+    private interface SensorInput{
+        public boolean verifySensor();
     }
 }

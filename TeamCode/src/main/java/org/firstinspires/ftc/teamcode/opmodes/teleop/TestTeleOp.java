@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.robotsystems.LaunchSystem;
  */
 @TeleOp
 public class TestTeleOp extends OpMode {
-    private DriveSystem driveSystem;
+    public static DriveSystem driveSystem;
     private ElevatorSystem elevatorSystem;
     private ElevatorErectionSystem elvatorErectionSystem;
 
@@ -38,7 +38,8 @@ public class TestTeleOp extends OpMode {
 
     @Override
     public void init() {
-        driveSystem = new DriveSystem(hardwareMap, gamepad1);
+        if (driveSystem==null)
+            driveSystem = new DriveSystem(hardwareMap, gamepad1, 180);
         elevatorSystem = new ElevatorSystem(hardwareMap);
         elvatorErectionSystem = new ElevatorErectionSystem(hardwareMap);
         yks = new EndPointSystem(hardwareMap);

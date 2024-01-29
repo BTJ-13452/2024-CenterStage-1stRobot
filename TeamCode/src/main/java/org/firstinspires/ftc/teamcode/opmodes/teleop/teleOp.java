@@ -23,7 +23,7 @@ public class teleOp extends OpMode {
 
     @Override
     public void init() {
-        driveSystem = new DriveSystem(hardwareMap, gamepad1);
+        driveSystem = new DriveSystem(hardwareMap, gamepad1,0);
 
         leftEncoder = hardwareMap.get(DcMotorEx.class, "DL");
         rightEncoder = hardwareMap.get(DcMotorEx.class, "DR");

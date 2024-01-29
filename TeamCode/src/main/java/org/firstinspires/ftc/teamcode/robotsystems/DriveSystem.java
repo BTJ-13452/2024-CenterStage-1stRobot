@@ -14,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class DriveSystem{
+    int startAngle;
    private DcMotor leftFrontDrive;
    private DcMotor leftBackDrive;
    private DcMotor rightFrontDrive;
@@ -24,8 +25,6 @@ public class DriveSystem{
 BNO055IMU imu;
 Orientation angles = new Orientation();
 double initYaw;
-double adjustedYaw;
-
 Gamepad gamepad;
 
 public boolean opModeIsActive = false;
@@ -71,7 +70,7 @@ public DriveSystem(HardwareMap map){
 
     runTime.reset();
 }
-    public DriveSystem(HardwareMap map, Gamepad gamepad) {
+    public DriveSystem(HardwareMap map, Gamepad gamepad, int startAngle) {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.mode = BNO055IMU.SensorMode.IMU;
@@ -93,13 +92,14 @@ public DriveSystem(HardwareMap map){
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
 
         this.gamepad = gamepad;
+
+        this.startAngle = startAngle;
     }
     public void Drive() {
 
         angles=imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        adjustedYaw = angles.firstAngle-initYaw;
-        double zeroDYaw = initYaw+angles.firstAngle;
+        double zeroDYaw = initYaw+angles.firstAngle-startAngle;
 
         double x = gamepad.left_stick_x;
         double y = -gamepad.left_stick_y;

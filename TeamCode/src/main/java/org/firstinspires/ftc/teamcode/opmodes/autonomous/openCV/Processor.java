@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous.openCV;
 
+import static android.os.SystemClock.sleep;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
@@ -17,17 +19,14 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 public class Processor implements VisionProcessor {
 
-    OpMode opMode;
+    static OpMode opMode;
 
     Mat rightCrop = new Mat();
 
     Mat middleCrop = new Mat();
-    double rightAvg;
-    double middleAvg;
+    static double rightAvg;
+    static double middleAvg;
 
-    public int getPlace() {
-        return place;
-    }
 
     int place;
     Paint mainPaint;
@@ -77,16 +76,18 @@ public class Processor implements VisionProcessor {
         rightAvg =(int) Core.mean(rightCrop).val[0];
         middleAvg =(int) Core.mean(middleCrop).val[0];
 //
-        if (rightAvg< middleAvg && rightAvg < 110) {
-            opMode.telemetry.addData("Side", "Right");
-            place =1;
-        } else if (middleAvg<rightAvg && middleAvg<110) {
-            opMode.telemetry.addData("Side", "middle");
-            place =2;
-        } else {
-            opMode.telemetry.addData("Side", "left");
-            place =3;
-        }
+//        if (rightAvg< middleAvg && rightAvg < 110) {
+//            opMode.telemetry.addData("Side", "Right");
+//            place =1;
+//        } else if (middleAvg<rightAvg && middleAvg<110) {
+//            opMode.telemetry.addData("Side", "middle");
+//            place =2;
+//        } else {
+//            opMode.telemetry.addData("Side", "left");
+//            place =3;
+//        }
+
+
         opMode.telemetry.addData( "Right:  ", rightAvg);
         opMode.telemetry.addData( "middle:  ", middleAvg);
         opMode.telemetry.update();
@@ -94,14 +95,61 @@ public class Processor implements VisionProcessor {
         return frame;
     }
 
-    @Override
-    public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
-        int widthRight = onscreenWidth/3;
+    public static int whichSideIf(){
+        if (rightAvg< middleAvg && rightAvg < 110) {
+            return 1;
+        } else if (middleAvg<rightAvg && middleAvg<110) {
 
+           return 2;
+        } else {
 
-    //   canvas.drawRect(0, 0, onscreenWidth/3, onscreenHeight/3, mainPaint);
-      // canvas.drawRect(onscreenWidth/3, 0, 2 *(onscreenWidth/3) + 150 , onscreenHeight/3, mainPaint);
+            return 3;
+        }
+    }
+    public static int findHighest(int right, int middle, int left) {
+        if (right >= middle && right >= left) {
+            return 1;
+        } else if (middle >= right && middle >= left) {
+            return 2;
+        } else {
+            return 3;
+        }
+    }
+    public static int whichSide(){
+      int right = 0, left = 0, middle = 0;
+        final boolean[] aa = {true};
+      new Thread(new Runnable() {
+          @Override
+          public void run() {
+             sleep(1000);
+             aa[0] = false;
+          }
+
+      }).start();
+      while(aa[0]){
+      switch (whichSideIf()){
+          case 1:
+              right++;
+              break;
+          case 2:
+              middle++;
+              break;
+          case 3:
+              left++;
+              break;
+      }
+          sleep(1000);
+      }
+      return findHighest(right,middle,left);
 
     }
+
+
+
+    @Override
+    public void onDrawFrame(Canvas canvas, int onscreenWidth, int onscreenHeight, float scaleBmpPxToCanvasPx, float scaleCanvasDensity, Object userContext) {
+
+    }
+
 
 }

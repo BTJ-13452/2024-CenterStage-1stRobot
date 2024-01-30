@@ -90,7 +90,7 @@ public class automomuos_R1 extends LinearOpMode {
         };
 
         do{
-            type = processor.getPlace();
+            type = Processor.whichSide();
         } while (opModeInInit());
 
 

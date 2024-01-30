@@ -5,7 +5,6 @@ import static android.os.SystemClock.sleep;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
@@ -13,7 +12,6 @@ import org.firstinspires.ftc.vision.VisionProcessor;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
-
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -32,7 +30,7 @@ public class Processor implements VisionProcessor {
     Paint mainPaint;
 
     public Processor(OpMode opMode) {
-        this.opMode = opMode;
+        Processor.opMode = opMode;
         mainPaint = new Paint();
         mainPaint.setARGB(0, 0, 0, 0);
         mainPaint.setStrokeWidth(3);
@@ -108,16 +106,20 @@ public class Processor implements VisionProcessor {
     }
     public static int findHighest(int right, int middle, int left) {
         if (right >= middle && right >= left) {
+            opMode.telemetry.addData("Side", "right");
             return 1;
         } else if (middle >= right && middle >= left) {
+            opMode.telemetry.addData("Side", "middle");
             return 2;
         } else {
+            opMode.telemetry.addData("Side", "left");
             return 3;
         }
     }
     public static int whichSide(){
       int right = 0, left = 0, middle = 0;
         final boolean[] aa = {true};
+        while(aa[0]){
       new Thread(new Runnable() {
           @Override
           public void run() {
@@ -126,7 +128,6 @@ public class Processor implements VisionProcessor {
           }
 
       }).start();
-      while(aa[0]){
       switch (whichSideIf()){
           case 1:
               right++;
@@ -138,7 +139,7 @@ public class Processor implements VisionProcessor {
               left++;
               break;
       }
-          sleep(1000);
+
       }
       return findHighest(right,middle,left);
 

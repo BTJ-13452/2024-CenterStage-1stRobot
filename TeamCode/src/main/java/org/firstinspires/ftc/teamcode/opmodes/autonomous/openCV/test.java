@@ -3,11 +3,13 @@ package org.firstinspires.ftc.teamcode.opmodes.autonomous.openCV;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opMode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 @Autonomous
+@Disabled
 public class test extends LinearOpMode {
     Processor processor = new Processor(this);
     VisionPortal myVisionPortal;

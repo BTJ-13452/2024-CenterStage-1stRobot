@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.robotsystems.DriveSystem;
  * The teleOp class represents a TeleOp mode for controlling a robot drive system.
  */
 @TeleOp
+@Disabled
 public class teleOp extends OpMode {
 
     private DriveSystem driveSystem;

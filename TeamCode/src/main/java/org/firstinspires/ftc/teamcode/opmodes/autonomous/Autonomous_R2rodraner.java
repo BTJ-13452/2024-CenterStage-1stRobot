@@ -2,12 +2,14 @@ package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.roadrunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.roadrunner.trajectorysequence.TrajectorySequence;
 @Autonomous
-public class Autonomous_R2 extends OpMode {
+@Disabled
+public class Autonomous_R2rodraner extends OpMode {
 
     final static double FIELD_LENGTH = 143;
     final static double TILE = FIELD_LENGTH/6;

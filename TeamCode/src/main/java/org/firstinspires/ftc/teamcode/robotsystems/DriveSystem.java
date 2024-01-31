@@ -14,7 +14,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class DriveSystem{
-    int startAngle;
    private DcMotor leftFrontDrive;
    private DcMotor leftBackDrive;
    private DcMotor rightFrontDrive;
@@ -24,53 +23,14 @@ public class DriveSystem{
     double globalAngle;
 BNO055IMU imu;
 Orientation angles = new Orientation();
-double initYaw;
+public double initYaw;
+double adjustedYaw;
+
 Gamepad gamepad;
 
 public boolean opModeIsActive = false;
-public DriveSystem(HardwareMap map){
-    BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
-    parameters.mode = BNO055IMU.SensorMode.IMU;
-    parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-    parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-    parameters.loggingEnabled = false;
-    imu = map.get(BNO055IMU.class, "imu");
-
-    imu.initialize(parameters);
-
-    leftFrontDrive = map.dcMotor.get("UL");
-    leftBackDrive = map.dcMotor.get("DL");
-    rightFrontDrive = map.dcMotor.get("UR");
-    rightBackDrive = map.dcMotor.get("DR");
-
-    leftFrontDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-    leftBackDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-
-    leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-    leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-    rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-    leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-    rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-
-    leftFrontDrive.setTargetPosition(0);
-    leftBackDrive.setTargetPosition(0);
-    rightFrontDrive.setTargetPosition(0);
-    rightBackDrive.setTargetPosition(0);
-
-    runTime.reset();
-}
-    public DriveSystem(HardwareMap map, Gamepad gamepad, int startAngle) {
+    public DriveSystem(HardwareMap map, Gamepad gamepad, double startAngle) {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.mode = BNO055IMU.SensorMode.IMU;
@@ -81,7 +41,7 @@ public DriveSystem(HardwareMap map){
 
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        initYaw = angles.firstAngle;
+        initYaw = angles.firstAngle + startAngle;
 
         rightFrontDrive = map.get(DcMotor.class, "UR");
         rightBackDrive = map.get(DcMotor.class, "DR");
@@ -92,14 +52,12 @@ public DriveSystem(HardwareMap map){
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
 
         this.gamepad = gamepad;
-
-        this.startAngle = startAngle;
     }
     public void Drive() {
 
         angles=imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        double zeroDYaw = initYaw+angles.firstAngle-startAngle;
+        double zeroDYaw = initYaw+angles.firstAngle;
 
         double x = gamepad.left_stick_x;
         double y = -gamepad.left_stick_y;
@@ -125,12 +83,11 @@ public DriveSystem(HardwareMap map){
             leftBack /= power + turn;
             rightBack /= power - turn;
         }
-            leftFrontDrive.setPower(leftFront);
-            rightFrontDrive.setPower(rightFront);
-            leftBackDrive.setPower(leftBack);
-            rightBackDrive.setPower(rightBack);
-    }
-    public void driveByEncoder(double power, double angleDegrees, double CM, int angleAheadDegrees) {
+        leftFrontDrive.setPower(leftFront);
+        rightFrontDrive.setPower(rightFront);
+        leftBackDrive.setPower(leftBack);
+        rightBackDrive.setPower(rightBack);
+    }    public void driveByEncoder(double power, double angleDegrees, double CM, int angleAheadDegrees) {
         // 9.6 CM diameter
         // 9.6 * PI = perimeter
         // perimeter = 30.16

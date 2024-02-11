@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -37,6 +38,9 @@ public class automomuos_R1 extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         TestTeleOp.red = true;
 
+        new ElevatorErectionSystem(hardwareMap);
+        new ElevatorSystem(hardwareMap);
+
         motorBackLeft = hardwareMap.dcMotor.get("DL");
         motorBackRight = hardwareMap.dcMotor.get("DR");
         motorFrontLeft = hardwareMap.dcMotor.get("UL");
@@ -44,7 +48,6 @@ public class automomuos_R1 extends LinearOpMode {
 
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
-
 
 
         motorBackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

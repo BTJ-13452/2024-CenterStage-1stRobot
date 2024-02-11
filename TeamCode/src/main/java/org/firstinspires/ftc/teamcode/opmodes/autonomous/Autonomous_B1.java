@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.opmodes.teleop.TestTeleOp;
+import org.firstinspires.ftc.teamcode.robotsystems.ElevatorErectionSystem;
+import org.firstinspires.ftc.teamcode.robotsystems.ElevatorSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.EndPointSystem;
 @Autonomous
 public class Autonomous_B1 extends LinearOpMode  {
@@ -25,6 +27,11 @@ public class Autonomous_B1 extends LinearOpMode  {
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+
+        new ElevatorErectionSystem(hardwareMap);
+        new ElevatorSystem(hardwareMap);
+
 
         TestTeleOp.red = false;
         motorBackLeft = hardwareMap.dcMotor.get("DL");
@@ -56,7 +63,7 @@ public class Autonomous_B1 extends LinearOpMode  {
 
         yks.closeErectionYks();
 
-        sleep(1000);
+        sleep(5000);
 
         yks.openYksLeft();
         yks.openYksRight();

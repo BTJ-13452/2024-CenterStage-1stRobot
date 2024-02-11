@@ -43,6 +43,8 @@ public boolean opModeIsActive = false;
 
         initYaw = angles.firstAngle + startAngle;
 
+
+
         rightFrontDrive = map.get(DcMotor.class, "UR");
         rightBackDrive = map.get(DcMotor.class, "DR");
         leftBackDrive = map.get(DcMotor.class, "DL");
@@ -170,5 +172,11 @@ public boolean opModeIsActive = false;
     leftFrontDrive.setTargetPosition(10000);
     leftFrontDrive.setPower(1);
     leftFrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+    public void reDrive(){
+        leftFrontDrive.setPower(0);
+        rightBackDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightFrontDrive.setPower(0);
     }
 }

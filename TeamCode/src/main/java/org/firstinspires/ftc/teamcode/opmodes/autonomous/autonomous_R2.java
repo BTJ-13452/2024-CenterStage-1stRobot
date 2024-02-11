@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.opmodes.teleop.TestTeleOp;
+import org.firstinspires.ftc.teamcode.robotsystems.ElevatorErectionSystem;
+import org.firstinspires.ftc.teamcode.robotsystems.ElevatorSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.EndPointSystem;
 
 @Autonomous
@@ -28,6 +30,9 @@ public class autonomous_R2 extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         TestTeleOp.red = true;
+
+        new ElevatorErectionSystem(hardwareMap);
+        new ElevatorSystem(hardwareMap);
 
         motorBackLeft = hardwareMap.dcMotor.get("DL");
         motorBackRight = hardwareMap.dcMotor.get("DR");

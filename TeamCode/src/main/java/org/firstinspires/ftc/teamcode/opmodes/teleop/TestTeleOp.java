@@ -18,7 +18,6 @@ import org.firstinspires.ftc.teamcode.robotsystems.LaunchSystem;
 @TeleOp
 public class TestTeleOp extends OpMode {
 
-    public static Boolean red;
     private DriveSystem driveSystem;
     private ElevatorSystem elevatorSystem;
     private ElevatorErectionSystem elvatorErectionSystem;
@@ -31,6 +30,7 @@ public class TestTeleOp extends OpMode {
     private boolean YPressed = false;
     private boolean RBPressed = false;
     private boolean LBPressed = false;
+    private boolean RSTPressed = false;
     private boolean G2BPressed = false;
 
     private hangingRobot hangingRobot;
@@ -38,9 +38,29 @@ public class TestTeleOp extends OpMode {
 
     private EndPointSystem yks;
 
+    public void reInit(){
+        if (gamepad1.right_stick_button && !RSTPressed){
+            RSTPressed = true;
+            driveSystem.reDrive();
+            elvatorErectionSystem.elevatorToZero();
+            elevatorSystem.StopElevator();
+            yks.closeYksLeft();
+            yks.closeYksRight();
+            yks.closeErectionYks();
+            init();
+        }
+        if(!gamepad1.right_stick_button){
+            RSTPressed = false;
+        }
+    }
+
     @Override
     public void init() {
-        driveSystem = new DriveSystem(hardwareMap, gamepad1,red? 90:270);
+
+        if (driveSystem==null){
+            driveSystem = new DriveSystem(hardwareMap,gamepad1,0);
+        }
+
         elevatorSystem = new ElevatorSystem(hardwareMap);
         elvatorErectionSystem = new ElevatorErectionSystem(hardwareMap);
         yks = new EndPointSystem(hardwareMap);
@@ -56,6 +76,7 @@ public class TestTeleOp extends OpMode {
 
     @Override
     public void loop() {
+        reInit();
         driveSystem.Drive();
 
         telemetry.addData("",driveSystem.initYaw);
@@ -188,6 +209,6 @@ public class TestTeleOp extends OpMode {
 
     @Override
     public void stop() {
-        elvatorErectionSystem.StopEndGame();
+        driveSystem = null;
     }
 }

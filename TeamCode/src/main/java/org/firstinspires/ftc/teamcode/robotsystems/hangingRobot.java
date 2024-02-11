@@ -30,5 +30,5 @@ public class hangingRobot {
             hang.setPosition(1);
         }
     }
-    public void EStop() {}
+
 }

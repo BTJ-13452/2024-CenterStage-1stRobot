@@ -65,12 +65,31 @@ public class TestTeleOp extends OpMode {
 //        hardwareMap.servo.get("erectionYks").setPosition(0);
     }
 
+    Thread plane = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            while (true){
+                if (gamepad1.y && !YPressed) {
+                    YPressed = true;
+                    launchSystem.Activate();
+                } else if (!gamepad1.y) {
+                    YPressed = false;
+                }
+            }
+        }
+    });
+
+    @Override
+    public void start(){
+        plane.start();
+    }
+
     @Override
     public void loop() {
         reInit();
         odometry.Odometry();
         telemetry.addData("LRA", "%6d %6d %6d", odometry.currentLeftPosition, odometry.currentRightPosition, odometry.currentAuxPosition);
-        telemetry.addData("xyh", "%6.1f cm %6.1f cm %6.1f deg", odometry.pos.x, odometry.pos.y,Math.toDegrees(odometry.pos.h));
+        telemetry.addData("xyh", "%6.1f cm %6.1f cm %6.1f deg", odometry.pos.getX(), odometry.pos.getY(),Math.toDegrees(odometry.pos.getH()));
         telemetry.update();
         driveSystem.Drive();
 
@@ -194,6 +213,7 @@ public class TestTeleOp extends OpMode {
 
     @Override
     public void stop() {
+        plane.interrupt();
         driveSystem = null;
     }
 }

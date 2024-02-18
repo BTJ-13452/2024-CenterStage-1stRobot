@@ -5,12 +5,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.robotsystems.ElevatorErectionSystem;
+import org.firstinspires.ftc.teamcode.robotsystems.System_Odometry;
 import org.firstinspires.ftc.teamcode.robotsystems.hangingRobot;
 import org.firstinspires.ftc.teamcode.robotsystems.DriveSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.ElevatorSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.ElevatorErectionSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.EndPointSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.LaunchSystem;
+import static android.os.SystemClock.sleep;
 
 /**
  * The TestTeleOp class represents the TeleOp mode for testing various robot systems.
@@ -38,32 +40,21 @@ public class TestTeleOp extends OpMode {
 
     private EndPointSystem yks;
 
+    System_Odometry odometry;
     public void reInit(){
-        if (gamepad1.right_stick_button && !RSTPressed){
-            RSTPressed = true;
-            driveSystem.reDrive();
-            elvatorErectionSystem.elevatorToZero();
-            elevatorSystem.StopElevator();
-            yks.closeYksLeft();
-            yks.closeYksRight();
-            yks.closeErectionYks();
-            init();
-        }
-        if(!gamepad1.right_stick_button){
-            RSTPressed = false;
-        }
+
     }
 
     @Override
     public void init() {
+        odometry = new System_Odometry(hardwareMap);
 
         if (driveSystem==null){
             driveSystem = new DriveSystem(hardwareMap,gamepad1,0);
         }
-
+        yks = new EndPointSystem(hardwareMap);
         elevatorSystem = new ElevatorSystem(hardwareMap);
         elvatorErectionSystem = new ElevatorErectionSystem(hardwareMap);
-        yks = new EndPointSystem(hardwareMap);
         hangingRobot = new hangingRobot(hardwareMap);
         launchSystem = new LaunchSystem(hardwareMap);
 
@@ -77,14 +68,13 @@ public class TestTeleOp extends OpMode {
     @Override
     public void loop() {
         reInit();
+        odometry.Odometry();
+        telemetry.addData("LRA", "%6d %6d %6d", odometry.currentLeftPosition, odometry.currentRightPosition, odometry.currentAuxPosition);
+        telemetry.addData("xyh", "%6.1f cm %6.1f cm %6.1f deg", odometry.pos.x, odometry.pos.y,Math.toDegrees(odometry.pos.h));
+        telemetry.update();
         driveSystem.Drive();
 
-        telemetry.addData("",driveSystem.initYaw);
 
-//        telemetry.addData("lm",elvatorErectionSystem.Lm.getCurrentPosition());
-//        telemetry.addData("rm",elvatorErectionSystem.Rm.getCurrentPosition());
-//        telemetry.addData("yksRight",yks.yksRight.getPosition());
-        telemetry.update();
 
 //        if(gamepad1.right_bumper) {
 //            elvatorErectionSystem.elevatorUp();
@@ -114,13 +104,7 @@ public class TestTeleOp extends OpMode {
             elevatorSystem.StopElevator();
         }
 
-        if (gamepad1.right_trigger > 0)
-            elvatorErectionSystem.elevatorUp(gamepad1.right_trigger);
-        if (gamepad1.left_trigger > 0)
-            elvatorErectionSystem.elevatorDown(gamepad1.left_trigger);
-        if (gamepad1.right_trigger == 0 && gamepad1.left_trigger == 0) {
-            elvatorErectionSystem.elevatorToZero();
-        }
+        elvatorErectionSystem.raisedAndlowerErection(gamepad1.right_trigger - gamepad1.left_trigger);
 
         if (gamepad1.y && !YPressed) {
             YPressed = true;
@@ -172,26 +156,16 @@ public class TestTeleOp extends OpMode {
         if (gamepad1.dpad_down) {
             yks.closeErectionYks();
         }
-        if (gamepad1.left_stick_button) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    yks.openYksRight();
-                    yks.openYksLeft();
-                    elvatorErectionSystem.LowerHeight(-0.7);
-                    elevatorSystem.CloseElevator();
-                    yks.closeErectionYks();
-                }
-            }).start();
-        }
 
         if (gamepad2.start){
             stop();
             init();
         }
 
-
-
+        if(gamepad1.left_stick_button){
+            driveSystem.Estop();
+            driveSystem = new DriveSystem(hardwareMap, gamepad1, 0);
+        }
 
         if (gamepad2.b &&! G2BPressed){
             G2BPressed = true;
@@ -205,6 +179,17 @@ public class TestTeleOp extends OpMode {
         else if(!gamepad2.b){
             G2BPressed = false;
         }
+
+    if(gamepad1.right_stick_button) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                yks.closeErectionYks();
+                sleep(500);
+                elevatorSystem.CloseElevator();
+            }
+        }).start();
+    }
     }
 
     @Override

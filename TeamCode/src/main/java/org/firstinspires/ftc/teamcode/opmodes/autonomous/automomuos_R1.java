@@ -36,7 +36,7 @@ public class automomuos_R1 extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        TestTeleOp.red = true;
+//        TestTeleOp.red = true;
 
         new ElevatorErectionSystem(hardwareMap);
         new ElevatorSystem(hardwareMap);

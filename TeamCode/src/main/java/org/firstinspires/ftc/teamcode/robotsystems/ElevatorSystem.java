@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.robotsystems;
 
+
+import static android.os.SystemClock.sleep;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -22,7 +25,7 @@ public class ElevatorSystem {
      */
     public ElevatorSystem(HardwareMap map) {
         elevator = map.dcMotor.get("Elevator");
-        magneticSwitch = map.get(TouchSensor.class, "elevatorSwitch");
+        magneticSwitch = map.get(TouchSensor.class, "AW");
         elevator.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         elevator.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -68,10 +71,17 @@ public class ElevatorSystem {
      * Closes the elevator until the magnetic switch is pressed.
      */
     public void CloseElevator() {
-        while (!magneticSwitch.isPressed()) {
+        final boolean[] isPassedTime = {false};
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                sleep(3000);
+                isPassedTime[0] = true;
+            }
+        }).start();
+        while (!magneticSwitch.isPressed() && !isPassedTime[0]) {
             elevator.setPower(Speed);
         }
         elevator.setPower(0);
-        //elevator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 }

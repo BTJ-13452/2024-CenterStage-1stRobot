@@ -29,7 +29,7 @@ public class autonomous_R2 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        TestTeleOp.red = true;
+//        TestTeleOp.red = true;
 
         new ElevatorErectionSystem(hardwareMap);
         new ElevatorSystem(hardwareMap);

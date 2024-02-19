@@ -5,9 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
-import org.firstinspires.ftc.teamcode.roadrunner.util.Encoder;
+
 import org.firstinspires.ftc.teamcode.robotsystems.DriveSystem;
 
 /**

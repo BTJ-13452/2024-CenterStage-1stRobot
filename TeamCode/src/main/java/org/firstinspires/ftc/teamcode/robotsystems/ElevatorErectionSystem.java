@@ -14,136 +14,112 @@ import org.firstinspires.ftc.vision.VisionPortal;
  */
 public class ElevatorErectionSystem {
 
+    final String RIGHT_MOTOR_CONFIGURE = "rm";
+    final String LEFT_MOTOR_CONFIGURE = "lm";
 
-    final int HEIGHT_OF_HANG = 1000; //TODO: לעשות מדידות
+    final public static int TICKS_FOR_BACKDROPS = 1;
+    final public static int TICKS_FOR_RIGGING = 2;
 
-    public DcMotor Lm;
-    public DcMotor Rm;
-    TouchSensor magneticSwitch;
+    final double POWER = 1;
+
+
+    DcMotor motorRight;
+    DcMotor motorLeft;
 
     /**
-     * Constructs a new ElevatorErectionSystem.
+     * Constructor for the System_ElevatorErection class.
      *
-     * @param map The HardwareMap for accessing hardware devices.
+     * @param map The HardwareMap object used to initialize hardware components.
      */
     public ElevatorErectionSystem(HardwareMap map) {
-        Lm = map.dcMotor.get("lm");
-        Rm = map.dcMotor.get("rm");
-        Lm.setDirection(DcMotorSimple.Direction.REVERSE);
+        // Motor initialization
+        motorRight = map.dcMotor.get(RIGHT_MOTOR_CONFIGURE);
+        motorLeft = map.dcMotor.get(LEFT_MOTOR_CONFIGURE);
 
-        magneticSwitch = map.get(TouchSensor.class, "erectionSwitch");
+        // Motor zero power behavior
+        motorRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motorLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        Lm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Rm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        // Set motors to zero position
+//        setToZero();
 
-        Lm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Rm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        // Motor run modes and encoder setup
+        motorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        motorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        motorLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        motorRight.setTargetPosition(0);
+        motorLeft.setTargetPosition(0);
+
+        motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
+//    public ElevatorErectionSystem(HardwareMap map) {
+//        Lm = map.dcMotor.get("lm");
+//        Rm = map.dcMotor.get("rm");
+//        Lm.setDirection(DcMotorSimple.Direction.REVERSE);
+//
+//        magneticSwitch = map.get(TouchSensor.class, "erectionSwitch");
+//
+//        Lm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        Rm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//
+//        Lm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        Rm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//    }
+
     /**
-     * Moves the elevator up with the specified power.
+     * Raises or lowers the elevator based on the specified multiplier.
      *
-     * @param power The power to move the elevator up.
+     * @param multiplier The multiplier to adjust the power for raising or lowering the elevator.
      */
-    public void elevatorUp(double power) {
-        Lm.setPower(power);
-        Rm.setPower(power);
+    public void raisedAndlowerErection(double multiplier) {
+        motorRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        Lm.setTargetPosition(Lm.getTargetPosition());
-        Rm.setTargetPosition(Rm.getTargetPosition());
+        motorLeft.setPower(POWER * multiplier);
+        motorRight.setPower(POWER * multiplier);
     }
-
-    public void erctionForHanging() {
-      Lm.setTargetPosition(HEIGHT_OF_HANG);
-      Rm.setTargetPosition(HEIGHT_OF_HANG);
-
-      Lm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-      Rm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
-
 
     /**
-     * Moves the elevator down with the specified power.
+     * Stops the elevator and resets motor run modes and positions.
+     */
+    public void stopErection() {
+        motorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        motorRight.setTargetPosition(motorRight.getCurrentPosition());
+        motorLeft.setTargetPosition(motorLeft.getCurrentPosition());
+
+        motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        motorRight.setPower(1);
+        motorLeft.setPower(1);
+    }
+
+    /**
+     * Moves the elevator to a specified number of ticks using encoder positions.
      *
-     * @param power The power to move the elevator down.
+     * @param tick The target position in ticks.
      */
-    public void elevatorDown(double power) {
-        Lm.setPower(-power);
-        Rm.setPower(-power);
-
-        Lm.setTargetPosition(Lm.getTargetPosition());
-        Rm.setTargetPosition(Rm.getTargetPosition());
-    }
-
-    /**
-     * Stops the elevator and sets the zero power behavior to BRAKE.
-     */
-    public void elevatorToZero() {
-        Lm.setPower(0);
-        Rm.setPower(0);
-        Lm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Rm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-
-    }
-
-    /**
-     * Lowers the elevator to a certain position with the specified power.
-     *
-     * @param power The power to lower the elevator.
-     */
-    public void LowerHeight(double power) {
-        while (!magneticSwitch.isPressed()) {
-            Lm.setPower(power);
-            Rm.setPower(power);
-        }
-        Lm.setPower(0);
-        Rm.setPower(0);
-    }
-
-    public void setPositionToHanging(){
-//        Lm.setTargetPosition();
-//        Rm.setTargetPosition();
-    }
-
-    /**
-     * Stops the endgame by continuously checking the magnetic switch.
-     */
-    public void StopEndGame() {
-        while (true) {
-            if (!magneticSwitch.isPressed()) {
-                Lm.setPower(-1);
-                Rm.setPower(-1);
-            } else {
-                Lm.setPower(0);
-                Rm.setPower(0);
-            }
-        }
-    }
-
     public void erectionTicks(int tick) {
-        Rm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-       Lm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-       Rm.setTargetPosition(tick);
-        Lm.setTargetPosition(tick);
+        motorRight.setTargetPosition(tick);
+        motorLeft.setTargetPosition(tick);
 
-        Rm.setPower(0.5);
-        Lm.setPower(0.5);
+        motorRight.setPower(1);
+        motorLeft.setPower(1);
 
-        Rm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Lm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-    }
-    public int getPosition(){
-        return Rm.getTargetPosition();
-    }
-
-
-    public void EStop() {
-        Lm.setPower(0);
-        Rm.setPower(0);
+        motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
 }

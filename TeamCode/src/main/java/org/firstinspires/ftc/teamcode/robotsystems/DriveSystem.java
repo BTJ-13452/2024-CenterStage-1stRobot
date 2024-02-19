@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.robotsystems;
 
+
+import static android.os.SystemClock.sleep;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,6 +11,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -30,6 +34,10 @@ Gamepad gamepad;
 
 public boolean opModeIsActive = false;
 
+    System_Odometry odometry;
+
+    Telemetry telemetry;
+
     public DriveSystem(HardwareMap map, Gamepad gamepad, double startAngle) {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -42,6 +50,8 @@ public boolean opModeIsActive = false;
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         initYaw = angles.firstAngle + startAngle;
+
+        odometry = new System_Odometry(map);
 
 
 
@@ -79,7 +89,6 @@ public boolean opModeIsActive = false;
         double leftBack = (power * sin / maxsincos + turn);
         double rightBack =(power * cos / maxsincos - turn);
         if ((power + Math.abs(turn))>1) {
-
             leftFront /= power + turn;
             rightFront /= power - turn;
             leftBack /= power + turn;
@@ -89,7 +98,8 @@ public boolean opModeIsActive = false;
         rightFrontDrive.setPower(rightFront);
         leftBackDrive.setPower(leftBack);
         rightBackDrive.setPower(rightBack);
-    }    public void driveByEncoder(double power, double angleDegrees, double CM, int angleAheadDegrees) {
+    }
+    public void driveByEncoder(double power, double angleDegrees, double CM, int angleAheadDegrees) {
         // 9.6 CM diameter
         // 9.6 * PI = perimeter
         // perimeter = 30.16
@@ -179,4 +189,61 @@ public boolean opModeIsActive = false;
         leftBackDrive.setPower(0);
         rightFrontDrive.setPower(0);
     }
+
+    public void Estop(){
+        leftFrontDrive.setPower(0);
+        rightBackDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+    }
+
+    public void drive(double power, double angle, double rotation) {
+
+        double y = -(power * Math.sin(angle));
+        double x = -(power * Math.cos(angle));
+        double rx = -rotation;
+
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+        double frontLeftPower = (y + x + rx) / denominator;
+        double backLeftPower = (y - x + rx) / denominator;
+        double frontRightPower = (y - x - rx) / denominator;
+        double backRightPower = (y + x - rx) / denominator;
+
+        leftFrontDrive.setPower(-frontLeftPower);
+        leftBackDrive.setPower(-backLeftPower);
+        rightFrontDrive.setPower(-frontRightPower);
+        rightBackDrive.setPower(-backRightPower);
+    }
+
+    public void driveByOdometry(double x, double y, double angle, Telemetry t){
+odometry.pos.setH(0);
+odometry.pos.setX(0);
+odometry.pos.setY(0);
+
+        telemetry = t;
+        double dx;
+        double dy;
+        double Dangle;
+        double headAngle;
+        double distance;
+
+        do {
+            odometry.Odometry();
+            dx = x - odometry.pos.getX();
+            dy = y - odometry.pos.getY();
+            Dangle = Math.atan(dx/dy);
+            headAngle = 0;
+//           headAngle = angle - Math.toDegrees(odometry.pos.h);
+            distance = Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2));
+            drive(distance<10? 0.1:0.4 ,Dangle, headAngle);
+            telemetry.addData("dis", distance);
+            telemetry.addData("LRA", "%6d %6d %6d", odometry.currentLeftPosition, odometry.currentRightPosition, odometry.currentAuxPosition);
+            telemetry.addData("xyh", "%6.1f cm %6.1f cm %6.1f deg", odometry.pos.getX(), odometry.pos.getY(),Math.toDegrees(odometry.pos.getH()));
+            telemetry.update();
+        }
+        while (distance>5);
+
+        drive(0,0,0);
+    }
 }
+

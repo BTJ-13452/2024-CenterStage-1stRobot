@@ -33,7 +33,7 @@ public class Autonomous_B1 extends LinearOpMode  {
         new ElevatorSystem(hardwareMap);
 
 
-        TestTeleOp.red = false;
+//        TestTeleOp.red = false;
         motorBackLeft = hardwareMap.dcMotor.get("DL");
         motorBackRight = hardwareMap.dcMotor.get("DR");
         motorFrontLeft = hardwareMap.dcMotor.get("UL");

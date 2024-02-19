@@ -34,6 +34,7 @@ public class TestTeleOp extends OpMode {
     private boolean LBPressed = false;
     private boolean RSTPressed = false;
     private boolean G2BPressed = false;
+    public boolean fildo = true;
 
     private hangingRobot hangingRobot;
     private LaunchSystem launchSystem;
@@ -91,7 +92,17 @@ public class TestTeleOp extends OpMode {
         telemetry.addData("LRA", "%6d %6d %6d", odometry.currentLeftPosition, odometry.currentRightPosition, odometry.currentAuxPosition);
         telemetry.addData("xyh", "%6.1f cm %6.1f cm %6.1f deg", odometry.pos.getX(), odometry.pos.getY(),Math.toDegrees(odometry.pos.getH()));
         telemetry.update();
+
+        if (fildo){
         driveSystem.Drive();
+        }
+        else driveSystem.DriveWithoutFildo();
+
+        if (gamepad2.a){
+            fildo = false;
+        }
+
+
 
 
 

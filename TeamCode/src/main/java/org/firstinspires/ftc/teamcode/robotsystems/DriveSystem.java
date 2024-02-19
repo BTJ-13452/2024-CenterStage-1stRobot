@@ -70,6 +70,7 @@ public boolean opModeIsActive = false;
         angles=imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         double zeroDYaw = initYaw+angles.firstAngle;
+//        double zeroDYaw = initYaw;
 
         double x = gamepad.left_stick_x;
         double y = -gamepad.left_stick_y;
@@ -99,6 +100,80 @@ public boolean opModeIsActive = false;
         leftBackDrive.setPower(leftBack);
         rightBackDrive.setPower(rightBack);
     }
+
+    public void DriveWithoutFildo() {
+
+        angles=imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+        //double zeroDYaw = initYaw+angles.firstAngle;
+        double zeroDYaw = initYaw;
+
+        double x = gamepad.left_stick_x;
+        double y = -gamepad.left_stick_y;
+        double turn = gamepad.right_stick_x;
+
+        double theta = Math.atan2(y, x)* 180/Math.PI;
+        double realtheta;
+        realtheta = (360 - zeroDYaw) + theta;
+        double power = Math.hypot(x, y);
+
+        double sin = Math.sin((realtheta*(Math.PI/180))-(Math.PI /4));
+        double cos = Math.cos((realtheta*(Math.PI/180))-(Math.PI /4));
+        double maxsincos = Math.max(Math.abs(sin),Math.abs(cos));
+
+        double leftFront = (power * cos / maxsincos + turn);
+        double rightFront = (power * sin / maxsincos - turn);
+        double leftBack = (power * sin / maxsincos + turn);
+        double rightBack =(power * cos / maxsincos - turn);
+        if ((power + Math.abs(turn))>1) {
+            leftFront /= power + turn;
+            rightFront /= power - turn;
+            leftBack /= power + turn;
+            rightBack /= power - turn;
+        }
+        leftFrontDrive.setPower(leftFront);
+        rightFrontDrive.setPower(rightFront);
+        leftBackDrive.setPower(leftBack);
+        rightBackDrive.setPower(rightBack);
+    }
+
+//    public void Drive() {
+//        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+//
+//        double initYaw = 0; // Set your initial yaw value here
+//        double zeroDYaw = initYaw + angles.firstAngle;
+//
+//        double x = gamepad.left_stick_x;
+//        double y = -gamepad.left_stick_y;  // Negate y if necessary based on your joystick orientation
+//        double turn = gamepad.right_stick_x;
+//
+//        double theta = Math.atan2(y, x) * 180 / Math.PI;
+//        double realtheta = (360 - zeroDYaw) + theta;
+//        double power = Math.hypot(x, y);
+//
+//        double sin = Math.sin((realtheta * (Math.PI / 180)) - (Math.PI / 4));
+//        double cos = Math.cos((realtheta * (Math.PI / 180)) - (Math.PI / 4));
+//        double maxsincos = Math.max(Math.abs(sin), Math.abs(cos));
+//
+//        double leftFront = (power * cos / maxsincos + turn);
+//        double rightFront = (power * sin / maxsincos - turn);
+//        double leftBack = (power * sin / maxsincos + turn);
+//        double rightBack = (power * cos / maxsincos - turn);
+//
+//        if ((power + Math.abs(turn)) > 1) {
+//            double maxSum = power + Math.abs(turn);
+//            leftFront /= maxSum;
+//            rightFront /= maxSum;
+//            leftBack /= maxSum;
+//            rightBack /= maxSum;
+//        }
+//
+//        leftFrontDrive.setPower(leftFront);
+//        rightFrontDrive.setPower(rightFront);
+//        leftBackDrive.setPower(leftBack);
+//        rightBackDrive.setPower(rightBack);
+//    }
+
     public void driveByEncoder(double power, double angleDegrees, double CM, int angleAheadDegrees) {
         // 9.6 CM diameter
         // 9.6 * PI = perimeter

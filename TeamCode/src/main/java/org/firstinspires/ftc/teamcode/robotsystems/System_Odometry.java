@@ -63,6 +63,7 @@ public class System_Odometry {
     public XYHVector pos = new XYHVector(START_POS);
 
 
+
     public void Odometry(){
         oldRightPosition = currentRightPosition;
         oldAuxPosition = currentAuxPosition;
@@ -120,6 +121,13 @@ public class System_Odometry {
         private double x;
         private double y;
         private double h;
+
+        public void reset(){
+            setX(0);
+            setY(0);
+            setH(0);
+        }
+
 
         public XYHVector ( double x,double y, double h){
            setH(h);

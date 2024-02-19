@@ -126,12 +126,14 @@ public class testCamera extends LinearOpMode {
                     RIGHT_BUTTOMRIGHT_ANCHOR_POINT, // Second point which defines the rectangle
                     Black, // The color the rectangle is drawn in
                     4);
+
             int x = rightAvg + middleAvg;
-            if (rightAvg < middleAvg && rightAvg < 70) {
+
+            if (rightAvg < middleAvg && rightAvg < 70 && x < 170) {
                 position = CSPosition.RIGHT;
-            }  if (middleAvg<rightAvg && middleAvg<110) {
+            }  if (middleAvg < rightAvg && middleAvg < 80) {
                 position = CSPosition.CENTER;
-            }  if (middleAvg>rightAvg && rightAvg < 110){
+            }  if (middleAvg>rightAvg && rightAvg < 110&& x > 170){
                 position = CSPosition.LEFT;
             }
 

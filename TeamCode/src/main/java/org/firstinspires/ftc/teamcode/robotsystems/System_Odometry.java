@@ -108,10 +108,10 @@ public class System_Odometry {
         }
 
         public void setH(double h) {
-            while(h>2*Math.PI){
+            while(h>Math.PI){
                 h -= 2*Math.PI;
             }
-            while (h<0){
+            while (h<=-Math.PI){
                 h+=2*Math.PI;
             }
             this.h = h;
@@ -120,6 +120,8 @@ public class System_Odometry {
         private double x;
         private double y;
         private double h;
+
+
 
         public XYHVector ( double x,double y, double h){
            setH(h);

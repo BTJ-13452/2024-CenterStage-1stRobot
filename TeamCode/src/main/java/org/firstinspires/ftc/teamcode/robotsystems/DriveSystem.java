@@ -291,9 +291,9 @@ public boolean opModeIsActive = false;
     }
 
     public void driveByOdometry(double x, double y, double angle, Telemetry t){
-odometry.pos.setH(0);
-odometry.pos.setX(0);
-odometry.pos.setY(0);
+        odometry.pos.setH(0);
+        odometry.pos.setX(0);
+        odometry.pos.setY(0);
 
         telemetry = t;
         double dx;
@@ -317,6 +317,31 @@ odometry.pos.setY(0);
             telemetry.update();
         }
         while (distance>5);
+
+        drive(0,0,0);
+    }public void driveByOdometryOnlyFor90Degrees (double angle, Telemetry t) {
+        odometry.pos.setH(0);
+        odometry.pos.setX(0);
+        odometry.pos.setY(0);
+
+        telemetry = t;
+        double dx;
+        double dy;
+        double Dangle;
+        double headAngle;
+        double distance = 9 ;
+
+        do {
+            odometry.Odometry();
+            Dangle = angle - odometry.pos.getH();
+
+            drive(0,0,Math.abs(Dangle)>Math.toRadians(5)? 0.4 : 0.1);
+
+            telemetry.addData("LRA", "%6d %6d %6d", odometry.currentLeftPosition, odometry.currentRightPosition, odometry.currentAuxPosition);
+            telemetry.addData("xyh", "%6.1f cm %6.1f cm %6.1f deg", odometry.pos.getX(), odometry.pos.getY(),Math.toDegrees(odometry.pos.getH()));
+            telemetry.update();
+        }
+        while (Dangle>Math.toRadians(5));
 
         drive(0,0,0);
     }

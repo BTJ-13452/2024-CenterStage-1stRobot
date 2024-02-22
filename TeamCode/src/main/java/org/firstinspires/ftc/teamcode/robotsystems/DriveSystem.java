@@ -52,7 +52,9 @@ public boolean opModeIsActive = false;
         initYaw = angles.firstAngle + startAngle;
 
         odometry = new System_Odometry(map);
-        odometry.pos.reset();
+
+
+
         rightFrontDrive = map.get(DcMotor.class, "UR");
         rightBackDrive = map.get(DcMotor.class, "DR");
         leftBackDrive = map.get(DcMotor.class, "DL");
@@ -62,7 +64,6 @@ public boolean opModeIsActive = false;
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
 
         this.gamepad = gamepad;
-
     }
     public void Drive() {
 
@@ -290,9 +291,9 @@ public boolean opModeIsActive = false;
     }
 
     public void driveByOdometry(double x, double y, double angle, Telemetry t){
-        odometry.pos.setH(0);
-        odometry.pos.setX(0);
-        odometry.pos.setY(0);
+odometry.pos.setH(0);
+odometry.pos.setX(0);
+odometry.pos.setY(0);
 
         telemetry = t;
         double dx;
@@ -307,7 +308,7 @@ public boolean opModeIsActive = false;
             dy = y - odometry.pos.getY();
             Dangle = Math.atan(dx/dy);
             headAngle = 0;
-            headAngle = angle - Math.toDegrees(odometry.pos.getH());
+//           headAngle = angle - Math.toDegrees(odometry.pos.h);
             distance = Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2));
             drive(distance<10? 0.1:0.4 ,Dangle, headAngle);
             telemetry.addData("dis", distance);
@@ -315,7 +316,7 @@ public boolean opModeIsActive = false;
             telemetry.addData("xyh", "%6.1f cm %6.1f cm %6.1f deg", odometry.pos.getX(), odometry.pos.getY(),Math.toDegrees(odometry.pos.getH()));
             telemetry.update();
         }
-        while (distance>5||(headAngle<85||headAngle>95));
+        while (distance>5);
 
         drive(0,0,0);
     }

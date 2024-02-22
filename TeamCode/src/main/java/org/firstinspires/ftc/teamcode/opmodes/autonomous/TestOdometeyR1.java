@@ -15,7 +15,7 @@ public class TestOdometeyR1 extends LinearOpMode {
         waitForStart();
         drive = new DriveSystem(hardwareMap,gamepad1,0);
 
-        drive.driveByOdometry(10,0,90,telemetry);
+        drive.driveByOdometry(100,0,0,telemetry);
         sleep(1000);
         while (opModeIsActive()){}
     }

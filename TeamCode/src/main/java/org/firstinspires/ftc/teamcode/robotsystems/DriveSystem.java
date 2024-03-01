@@ -307,6 +307,8 @@ public boolean opModeIsActive = false;
             dx = x - odometry.pos.getX();
             dy = y - odometry.pos.getY();
             Dangle = Math.atan(dx/dy);
+            if (dy<0)
+                Dangle += 180;
             headAngle = 0;
 //           headAngle = angle - Math.toDegrees(odometry.pos.h);
             distance = Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2));
@@ -319,7 +321,31 @@ public boolean opModeIsActive = false;
         while (distance>5);
 
         drive(0,0,0);
-    }public void driveByOdometryOnlyFor90Degrees (double angle, Telemetry t) {
+        odometry.Odometry();
+        odometry.resetDistance();
+    }
+
+
+    public void turnByOdometry(double angle, Telemetry t) {
+        double Dangle;
+
+        do {
+            odometry.Odometry();
+            Dangle = angle - odometry.pos.getH();
+
+            drive(0,0,Math.abs(Dangle)>Math.toRadians(5)? 0.4 : 0.1);
+
+            telemetry.addData("LRA", "%6d %6d %6d", odometry.currentLeftPosition, odometry.currentRightPosition, odometry.currentAuxPosition);
+            telemetry.addData("xyh", "%6.1f cm %6.1f cm %6.1f deg", odometry.pos.getX(), odometry.pos.getY(),Math.toDegrees(odometry.pos.getH()));
+            telemetry.update();
+        }
+        while (Dangle>Math.toRadians(3));
+
+        drive(0,0,0);
+        odometry.Odometry();
+        odometry.resetDistance();
+    }
+    public void driveByOdometryOnlyFor90Degrees (double angle, Telemetry t) {
         odometry.pos.setH(0);
         odometry.pos.setX(0);
         odometry.pos.setY(0);
@@ -332,13 +358,14 @@ public boolean opModeIsActive = false;
         double distance = 9 ;
 
         do {
-            odometry.Odometry();
+           odometry.Odometry();
             Dangle = angle - odometry.pos.getH();
 
             drive(0,0,Math.abs(Dangle)>Math.toRadians(5)? 0.4 : 0.1);
 
             telemetry.addData("LRA", "%6d %6d %6d", odometry.currentLeftPosition, odometry.currentRightPosition, odometry.currentAuxPosition);
             telemetry.addData("xyh", "%6.1f cm %6.1f cm %6.1f deg", odometry.pos.getX(), odometry.pos.getY(),Math.toDegrees(odometry.pos.getH()));
+            telemetry.addData("Dangle", Dangle);
             telemetry.update();
         }
         while (Dangle>Math.toRadians(5));

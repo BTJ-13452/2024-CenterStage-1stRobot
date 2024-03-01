@@ -18,7 +18,8 @@ import static android.os.SystemClock.sleep;
  * The TestTeleOp class represents the TeleOp mode for testing various robot systems.
  */
 @TeleOp
-public class TestTeleOp extends OpMode {
+public class
+ TestTeleOp extends OpMode {
 
     private DriveSystem driveSystem;
     private ElevatorSystem elevatorSystem;

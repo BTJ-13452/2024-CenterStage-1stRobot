@@ -19,19 +19,102 @@ public class TestOdometeyR1 extends LinearOpMode {
         drive = new DriveSystem(hardwareMap,gamepad1,0);
         elvatorErectionSystem = new ElevatorErectionSystem(hardwareMap);
         yks = new EndPointSystem(hardwareMap);
-        waitForStart();
         yks.closeYksRight();
         yks.closeYksLeft();
-        sleep(100);
-        drive.driveByOdometryOnlyFor90Degrees(Math.PI/2,telemetry);
-        drive.driveByOdometry(-93,93,0,telemetry);
-        sleep(1000);
-        drive.driveByOdometryOnlyFor90Degrees(Math.PI/2,telemetry);
-        sleep(1000);
-        drive.driveByOdometry(40,0,0,telemetry);
-        yks.openYksRight();
 
-        sleep(1000);
+        int position = 1;
+        do{
+            position = detect();
+        } while(opModeInInit());
+
+        waitForStart();
+
+//        drive.driveByOdometry(0,-100,0,telemetry);
+        drive.driveByOdometryOnlyFor90Degrees(Math.toRadians(90), telemetry);
+
+        sleep(10000);
+        switch (position){
+            case 1:
+
+                drive.driveByOdometry(0,-20,0,telemetry);
+                //לפתוח יחידת קצה
+                elvatorErectionSystem.erectionTicks(1000);
+                yks.openYksRight();
+                sleep(1500);
+                yks.closeYksRight();
+                elvatorErectionSystem.erectionTicks(-1000);
+                //ליסגור יחידת קצה
+                drive.driveByOdometry(10,30,0,telemetry);
+                drive.turnByOdometry(Math.PI*3/4.0,telemetry);
+                elvatorErectionSystem.erectionTicks(650);
+                //לפתוח יחידת קצה
+                yks.openYksLeft();
+                yks.closeYksLeft();
+                //לסגור יחידת קצה
+                elvatorErectionSystem.erectionTicks(-650);
+                drive.driveByOdometry(35,0,0,telemetry);
+                drive.driveByOdometry(0,-30,0,telemetry);
+                break;
+
+            case 2:
+
+                drive.driveByOdometry(0,15,0,telemetry);
+                //לפתוח יחידת קצה
+                elvatorErectionSystem.erectionTicks(1000);
+                yks.openYksRight();
+                sleep(1500);
+                yks.closeYksRight();
+                elvatorErectionSystem.erectionTicks(-1000);
+                //ליסגור יחידת קצה
+                drive.driveByOdometry(10,30,0,telemetry);
+                drive.turnByOdometry(Math.PI*3/4.0,telemetry);
+                elvatorErectionSystem.erectionTicks(650);
+                //לפתוח יחידת קצה
+                yks.openYksLeft();
+                yks.closeYksLeft();
+                //לסגור יחידת קצה
+                elvatorErectionSystem.erectionTicks(-650);
+                drive.driveByOdometry(35,0,0,telemetry);
+                drive.driveByOdometry(0,-30,0,telemetry);
+                break;
+
+            case 3:
+                drive.driveByOdometry(10,20,0,telemetry);
+                drive.turnByOdometry(Math.PI*-1/4.0,telemetry);
+                //לפתוח יחידת קצה
+                elvatorErectionSystem.erectionTicks(1000);
+                yks.openYksRight();
+                sleep(1500);
+                yks.closeYksRight();
+                elvatorErectionSystem.erectionTicks(-1000);
+                //ליסגור יחידת קצה
+                drive.turnByOdometry(Math.PI*3/4.0,telemetry);
+                drive.driveByOdometry(0,-50,0,telemetry);
+                elvatorErectionSystem.erectionTicks(650);
+                //לפתוח יחידת קצה
+                yks.openYksLeft();
+                yks.closeYksLeft();
+                //לסגור יחידת קצה
+                elvatorErectionSystem.erectionTicks(-650);
+                drive.driveByOdometry(35,0,0,telemetry);
+                drive.driveByOdometry(0,-30,0,telemetry);
+                break;
+        }
+//        drive.driveByOdometry(,-50,0,telemetry);
+//        yks.openYksRight();
+//
+//        sleep(1000);
+//
+//        drive.turnByOdometry(Math.PI,telemetry);
+//
+//        sleep(1000);
+//
+//        drive.driveByOdometry(20,30,0,telemetry);
+
         while (opModeIsActive()){}
+    }
+
+    public int detect(){
+        return 1;
     }
 }

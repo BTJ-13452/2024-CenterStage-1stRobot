@@ -45,8 +45,8 @@ public class System_Odometry {
         rightStartPos = encoderRight.getCurrentPosition();
         leftStartPos = encoderLeft.getCurrentPosition();
     }
-    public static final double L = 23;
-    public static final double B = 8.5;
+    public static final double L = 22;
+    public static final double B = 9;
     public static final double R = 2.4;
     public static final double N = 2000;
     public static final double CM_per_ticks = 2.0*Math.PI * R/N;
@@ -68,8 +68,8 @@ public class System_Odometry {
         oldAuxPosition = currentAuxPosition;
         oldLeftPosition = currentLeftPosition;
 
-        currentRightPosition = -encoderRight.getCurrentPosition() + rightStartPos;
-        currentLeftPosition = -encoderLeft.getCurrentPosition() + leftStartPos;
+        currentRightPosition = encoderRight.getCurrentPosition() - rightStartPos;
+        currentLeftPosition = encoderLeft.getCurrentPosition() + leftStartPos;
         currentAuxPosition = encoderAux.getCurrentPosition() - auxStartPos;
 
         int d1 = currentLeftPosition - oldLeftPosition;
@@ -86,9 +86,19 @@ public class System_Odometry {
         pos.setH(dtheta+pos.h);
     }
 
+    public void resetDistance(){
+
+        auxStartPos = encoderAux.getCurrentPosition();
+        rightStartPos = encoderRight.getCurrentPosition();
+        leftStartPos = encoderLeft.getCurrentPosition();
+
+        pos.setX(0);
+        pos.setY(0);
+    }
+
     public class XYHVector{
         public double getX() {
-            return -x;
+            return x;
         }
 
         public void setX(double x) {

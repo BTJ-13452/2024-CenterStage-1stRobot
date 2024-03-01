@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.robotsystems.ElevatorSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.EndPointSystem;
 
 @Autonomous
-@Disabled
+//@Disabled
 public class autonomous_R2 extends LinearOpMode {
     BNO055IMU imu;
     Orientation lastAngles = new Orientation();
@@ -25,6 +25,10 @@ public class autonomous_R2 extends LinearOpMode {
     DcMotor motorBackLeft;
 
     EndPointSystem yks;
+
+    ElevatorErectionSystem elevatorErectionSystem;
+
+    ElevatorSystem elevatorSystem;
 
     int type = 1;
 
@@ -45,54 +49,97 @@ public class autonomous_R2 extends LinearOpMode {
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
 
-
         motorBackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorFrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorBackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorFrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        elevatorSystem = new ElevatorSystem(hardwareMap);
+        elevatorErectionSystem = new ElevatorErectionSystem(hardwareMap);
         yks = new EndPointSystem(hardwareMap);
         yks.closeYksRight();
         yks.closeYksLeft();
 
+        int random = 1;
         waitForStart();
 
-        motorBackLeft.setPower(-0.5);
-        motorBackRight.setPower(0.5);
-        motorFrontLeft.setPower(0.5);
-        motorFrontRight.setPower(-0.5);
+        rotateBySeconds(0.3,1500);
+        driveSideBySeconds(-0.5, 1000);
+        driveBySeconds(-0.3, 1000);
+        if(random == 1) {
+            driveSideBySeconds(0.3, 3800);
+            yks.closeErectionYks();
+            sleep(500);
+            rotateBySeconds(0.3,160);
+            elevatorSystem.OpenElevator(80);
+            yks.openYksRight();
+            sleep(500);
+            elevatorErectionSystem.erectionTicks(2700);
+            sleep(2000);
+            yks.openErectionYks(0.6);
+            elevatorSystem.OpenElevator(1200);
+            sleep(500);
+            yks.openYksLeft();
+            sleep(500);
+            elevatorErectionSystem.erectionTicks(0);
+            yks.closeErectionYks();
+            elevatorSystem.CloseElevator();
+            driveSideBySeconds(-0.3,1000);
+            drive45BySeconds(0.7,2000);
+        }
+
+        sleep(30000);
+//
+//        yks.closeErectionYks();
+//
+//        sleep(2000);
+//
+//        yks.openYksLeft();
+//        yks.openYksRight();
+//
+//        yks.openErectionYks();
+    }
+
+    public void driveBySeconds(double power, int millSeconds){
+        motorBackRight.setPower(power);
+        motorFrontRight.setPower(power);
+        motorBackLeft.setPower(power);
+        motorFrontLeft.setPower(power);
+
+        sleep(millSeconds);
+        stopDrive();
+    }
+
+    public void rotateBySeconds(double power, int millSeconds){
+        motorBackRight.setPower(-power);
+        motorFrontRight.setPower(-power);
+        motorBackLeft.setPower(power);
+        motorFrontLeft.setPower(power);
+
+        sleep(millSeconds);
+        stopDrive();
+    }
+    public void driveSideBySeconds(double power, int millSeconds){
+        motorBackRight.setPower(power);
+        motorFrontRight.setPower(-power);
+        motorBackLeft.setPower(-power);
+        motorFrontLeft.setPower(power);
+
+        sleep(millSeconds);
+        stopDrive();
+    }
+    public void drive45BySeconds(double power, int millSeconds){
+        motorBackRight.setPower(-power);
+        motorFrontLeft.setPower(-power);
+        sleep(millSeconds);
+        stopDrive();
+    }
+    public void stopDrive(){
+        motorBackRight.setPower(0);
+        motorFrontRight.setPower(0);
+        motorBackLeft.setPower(0);
+        motorFrontLeft.setPower(0);
 
         sleep(100);
-
-        motorBackRight.setPower(-0.5);
-        motorFrontRight.setPower(-0.5);
-        motorBackLeft.setPower(-0.5);
-        motorFrontLeft.setPower(-0.5);
-
-        sleep(2000);
-
-        motorBackLeft.setPower(0.5);
-        motorBackRight.setPower(-0.5);
-        motorFrontLeft.setPower(-0.5);
-        motorFrontRight.setPower(0.5);
-
-        sleep(100);
-
-        motorBackRight.setPower(-0.5);
-        motorFrontRight.setPower(-0.5);
-        motorBackLeft.setPower(-0.5);
-        motorFrontLeft.setPower(-0.5);
-
-        sleep(1800);
-
-        yks.closeErectionYks();
-
-        sleep(2000);
-
-        yks.openYksLeft();
-        yks.openYksRight();
-
-       yks.openErectionYks();
-
     }
 }

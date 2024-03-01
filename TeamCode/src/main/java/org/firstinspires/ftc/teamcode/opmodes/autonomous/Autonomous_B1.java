@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.robotsystems.ElevatorErectionSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.ElevatorSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.EndPointSystem;
 @Autonomous
-@Disabled
+//@Disabled
 public class Autonomous_B1 extends LinearOpMode  {
     BNO055IMU imu;
     Orientation lastAngles = new Orientation();

@@ -117,11 +117,21 @@ public class System_Odometry {
             return h;
         }
 
+//        public void setH(double h) {
+//            while(h>Math.PI){
+//                h -= 2*Math.PI;
+//            }
+//            while (h<=-Math.PI){
+//                h+=2*Math.PI;
+//            }
+//            this.h = h;
+//        }
+
         public void setH(double h) {
-            while(h>Math.PI){
+            while(h>2*Math.PI){
                 h -= 2*Math.PI;
             }
-            while (h<=-Math.PI){
+            while (h<0){
                 h+=2*Math.PI;
             }
             this.h = h;

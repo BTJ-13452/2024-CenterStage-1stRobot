@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class EndPointSystem {
 
     final static double MIN_ERECTION_POSITION = 0.0;
-    final static double INIT_ERECTION_POSITION = 0.35;
+    final static double INIT_ERECTION_POSITION = 0.6;
     final static double MAX_ERECTION_POSITION = 0.75;
     final static double RIGHT_OPEN_POSITION = 0.6;
     final static double LEFT_OPEN_POSITION = 0.65;
@@ -38,6 +38,10 @@ public class EndPointSystem {
      */
     public void openErectionYks() {
         erectionYks.setPosition(MAX_ERECTION_POSITION);
+    }
+
+    public void openErectionYks(double position) {
+        erectionYks.setPosition(position);
     }
 
     /**

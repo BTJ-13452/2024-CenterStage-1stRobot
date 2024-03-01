@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.robotsystems.ElevatorSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.EndPointSystem;
 
 @Autonomous
-@Disabled
+//@Disabled
 public class automomuos_R1 extends LinearOpMode {
 
 

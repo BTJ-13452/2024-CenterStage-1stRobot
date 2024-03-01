@@ -358,7 +358,7 @@ public boolean opModeIsActive = false;
         double distance = 9 ;
 
         do {
-           odometry.Odometry();
+            odometry.Odometry();
             Dangle = angle - odometry.pos.getH();
 
             drive(0,0,Math.abs(Dangle)>Math.toRadians(5)? 0.4 : 0.1);

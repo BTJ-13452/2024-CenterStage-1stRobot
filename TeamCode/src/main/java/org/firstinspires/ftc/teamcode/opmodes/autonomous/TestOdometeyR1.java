@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 import android.graphics.Region;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.robotsystems.DriveSystem;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.robotsystems.ElevatorErectionSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.EndPointSystem;
 
 @Autonomous
+@Disabled
 public class TestOdometeyR1 extends LinearOpMode {
     DriveSystem drive;
     private ElevatorErectionSystem elvatorErectionSystem;
@@ -32,7 +34,7 @@ public class TestOdometeyR1 extends LinearOpMode {
 //        drive.driveByOdometry(0,-100,0,telemetry);
         drive.driveByOdometryOnlyFor90Degrees(Math.toRadians(90), telemetry);
 
-        sleep(10000);
+        sleep(1000000000);
         switch (position){
             case 1:
 

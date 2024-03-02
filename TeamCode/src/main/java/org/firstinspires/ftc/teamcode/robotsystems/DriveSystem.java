@@ -290,7 +290,7 @@ public boolean opModeIsActive = false;
         rightBackDrive.setPower(-backRightPower);
     }
 
-    public void driveByOdometry(double x, double y, double angle, Telemetry t){
+    public void driveByOdometry(double x, double y, double angle, Telemetry t,double power){
         odometry.pos.setH(0);
         odometry.pos.setX(0);
         odometry.pos.setY(0);
@@ -312,7 +312,7 @@ public boolean opModeIsActive = false;
             headAngle = 0;
 //           headAngle = angle - Math.toDegrees(odometry.pos.h);
             distance = Math.sqrt(Math.pow(dx,2) + Math.pow(dy,2));
-            drive(distance<10? 0.1:0.4 ,Dangle, headAngle);
+            drive(distance<10? 0.1:power ,Dangle, headAngle);
             telemetry.addData("dis", distance);
             telemetry.addData("LRA", "%6d %6d %6d", odometry.currentLeftPosition, odometry.currentRightPosition, odometry.currentAuxPosition);
             telemetry.addData("xyh", "%6.1f cm %6.1f cm %6.1f deg", odometry.pos.getX(), odometry.pos.getY(),Math.toDegrees(odometry.pos.getH()));
@@ -324,6 +324,7 @@ public boolean opModeIsActive = false;
         odometry.Odometry();
         odometry.resetDistance();
     }
+
 
 
     public void turnByOdometry(double angle, Telemetry t) {
@@ -345,7 +346,7 @@ public boolean opModeIsActive = false;
         odometry.Odometry();
         odometry.resetDistance();
     }
-    public void driveByOdometryOnlyFor90Degrees (double angle, Telemetry t) {
+    public void driveByOdometryOnlyFor90Degrees2(double angle, Telemetry t) {
         odometry.pos.setH(0);
         odometry.pos.setX(0);
         odometry.pos.setY(0);
@@ -365,12 +366,13 @@ public boolean opModeIsActive = false;
 
             telemetry.addData("LRA", "%6d %6d %6d", odometry.currentLeftPosition, odometry.currentRightPosition, odometry.currentAuxPosition);
             telemetry.addData("xyh", "%6.1f cm %6.1f cm %6.1f deg", odometry.pos.getX(), odometry.pos.getY(),Math.toDegrees(odometry.pos.getH()));
-            telemetry.addData("Dangle", Dangle);
             telemetry.update();
         }
         while (Dangle>Math.toRadians(5));
 
         drive(0,0,0);
     }
-}
+    }
+
+
 

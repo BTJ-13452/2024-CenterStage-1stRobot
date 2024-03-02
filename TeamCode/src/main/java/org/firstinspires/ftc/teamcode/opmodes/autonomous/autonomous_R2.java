@@ -60,12 +60,13 @@ public class autonomous_R2 extends LinearOpMode {
         yks.closeYksRight();
         yks.closeYksLeft();
 
-        int random = 1;
+        int random = 2;
         waitForStart();
 
         rotateBySeconds(0.3,1500);
         driveSideBySeconds(-0.5, 1000);
         driveBySeconds(-0.3, 1000);
+
         if(random == 1) {
             driveSideBySeconds(0.3, 3800);
             yks.closeErectionYks();
@@ -87,7 +88,14 @@ public class autonomous_R2 extends LinearOpMode {
             driveSideBySeconds(-0.3,1000);
             drive45BySeconds(0.7,2000);
         }
-
+        else if (random == 2 ){
+            driveSideBySeconds(0.3, 4000);
+            yks.closeErectionYks();
+            sleep(500);
+            yks.openYksRight();
+            sleep(500);
+            driveSideBySeconds(-0.3, 300);
+        }
         sleep(30000);
 //
 //        yks.closeErectionYks();

@@ -17,6 +17,7 @@ public class EndPointSystem {
     private Servo yksRight;
     private Servo yksLeft;
     private Servo erectionYks;
+    ElevatorErectionSystem elevatorErectionSystem;
 
     /**
      * Constructs a new EndPointSystem.
@@ -101,5 +102,11 @@ public class EndPointSystem {
         }
     }
     public void EStop() {}
+
+
+    public void YksSetPosition(double position){
+        erectionYks.setPosition(position);
+    }
+
 }
 

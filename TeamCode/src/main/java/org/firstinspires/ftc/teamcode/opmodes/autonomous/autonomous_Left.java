@@ -32,6 +32,7 @@ public class autonomous_Left extends LinearOpMode {
 
     testCamera.CenterStageDeterminationPipeline.CSPosition random;
 
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -41,7 +42,6 @@ public class autonomous_Left extends LinearOpMode {
         new ElevatorSystem(hardwareMap);
 
         camera = new testCamera(hardwareMap, this);
-
         motorBackLeft = hardwareMap.dcMotor.get("DL");
         motorBackRight = hardwareMap.dcMotor.get("DR");
         motorFrontLeft = hardwareMap.dcMotor.get("UL");
@@ -62,14 +62,45 @@ public class autonomous_Left extends LinearOpMode {
         yks.closeYksRight();
         yks.closeYksLeft();
 
-        do{
+        do {
             random = camera.pipeline.getAnalysis();
 
             telemetry.addData("Random: ", random);
             telemetry.update();
-        }while (!isStarted() && !isStopRequested());
+        } while (!isStarted() && !isStopRequested());
 
         waitForStart();
+
+
+        if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.RIGHT) {
+            driveSideBySeconds(0.5, 1000);
+            sleep(500);
+            elevatorErectionSystem.erectionTicks(1400);
+            sleep(500);
+            driveSideBySeconds(-0.5,1500);
+            elevatorSystem.Extension();
+            sleep(500);
+            yks.closeYksLeft();
+        }
+        else if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.CENTER){
+            driveBySeconds(-0.5,1500);
+            elevatorErectionSystem.erectionTicks(1400);
+            sleep(500);
+            elevatorSystem.Extension();
+            sleep(500);
+            yks.openYksLeft();
+
+        }
+        else if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.RIGHT) {
+            driveSideBySeconds(-0.5, 1000);
+            sleep(500);
+            elevatorErectionSystem.erectionTicks(1400);
+            sleep(500);
+            driveSideBySeconds(-0.5,1500);
+            elevatorSystem.Extension();
+            sleep(500);
+            yks.closeYksLeft();
+        }
 
         // rotateBySeconds(0.3,1500);
         // driveSideBySeconds(-0.5, 1000);
@@ -136,7 +167,7 @@ public class autonomous_Left extends LinearOpMode {
 
             driveBySeconds(-0.3, 1700);
             rotateBySeconds(-0.3, 1500);
-            driveSideBySeconds(0.3,1000);
+            driveSideBySeconds(0.3, 1000);
             yks.closeErectionYks();
             sleep(500);
             driveBySeconds(0.3, 600);
@@ -150,7 +181,7 @@ public class autonomous_Left extends LinearOpMode {
             yks.closeErectionYks();
             sleep(500);
             rotateBySeconds(0.3, 1800);
-            driveBySeconds(0.3,400);
+            driveBySeconds(0.3, 400);
             yks.openYksRight();
             sleep(500);
             //driveSideBySeconds(-0.3, 300);
@@ -161,7 +192,7 @@ public class autonomous_Left extends LinearOpMode {
 
             driveBySeconds(-0.3, 1700);
             rotateBySeconds(-0.3, 1500);
-            driveSideBySeconds(0.3,1000);
+            driveSideBySeconds(0.3, 1000);
             yks.closeErectionYks();
             sleep(500);
             yks.openYksRight();

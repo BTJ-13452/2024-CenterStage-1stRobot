@@ -101,25 +101,44 @@ public class autonomous_Right extends LinearOpMode {
             drive45BySeconds(0.7, 2000);
         } else if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.LEFT) {
 
-            driveBySeconds(-0.3, 1400);
-            yks.closeErectionYks();
-            sleep(500);
-            rotateBySeconds(0.3, 2200);
+            rotateBySeconds(0.3,1500);
+            driveSideBySeconds(-0.5,1000);
             yks.openYksRight();
             sleep(500);
-            //driveSideBySeconds(-0.3, 300);
-
-            sleep(30000);
+            driveBySeconds(0.5,1000);
+            elevatorSystem.Extension();
+            elevatorErectionSystem.erectionTicks(400);
+            sleep(500);
+            yks.openYksLeft();
+//            driveBySeconds(-0.3, 1400);
+//            yks.closeErectionYks();
+//            sleep(500);
+//            rotateBySeconds(0.3, 2200);
+//            yks.openYksRight();
+//            sleep(500);
+//            //driveSideBySeconds(-0.3, 300);
+//
+//            sleep(30000);
         }
         if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.CENTER) {
 
-            driveBySeconds(-0.3, 1600);
+            driveBySeconds(-5,1600);
             yks.closeErectionYks();
             sleep(500);
-            rotateBySeconds(0.3, 2700);
-            driveBySeconds(0.3,100);
+            elevatorErectionSystem.erectionTicks(1700);
+            sleep(500);
             yks.openYksRight();
             sleep(500);
+            rotateBySeconds(0.3,1500);
+            driveBySeconds(-0.5,1500);
+            yks.openYksLeft();
+//            driveBySeconds(-0.3, 1600);
+//            yks.closeErectionYks();
+//            sleep(500);
+//            rotateBySeconds(0.3, 2700);
+//            driveBySeconds(0.3,100);
+//            yks.openYksRight();
+//            sleep(500);
             //driveSideBySeconds(-0.3, 300);
         }
 

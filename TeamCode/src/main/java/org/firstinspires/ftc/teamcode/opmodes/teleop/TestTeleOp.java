@@ -219,6 +219,23 @@ public class
             G2BPressed = false;
         }
 
+        //automatic Yks Erection
+        if (elvatorErectionSystem.getErection() == 0){
+            yks.YksSetPosition(0);
+        }
+        else if (elvatorErectionSystem.getErection() <= 400 && elvatorErectionSystem.getErection() != 0){
+            yks.YksSetPosition(0.3);
+        }
+        else if (elvatorErectionSystem.getErection() >= 1400 && elvatorErectionSystem.getErection() < 1800){
+            yks.YksSetPosition(0.7);
+        }
+        else if (elvatorErectionSystem.getErection() <= 1800 && elvatorErectionSystem.getErection() < 2000){
+            yks.YksSetPosition(0.6);
+        }
+        else if (elvatorErectionSystem.getErection() == 2000){
+            yks.YksSetPosition(0.45);
+        }
+
     if(gamepad1.right_stick_button) {
         new Thread(new Runnable() {
             @Override

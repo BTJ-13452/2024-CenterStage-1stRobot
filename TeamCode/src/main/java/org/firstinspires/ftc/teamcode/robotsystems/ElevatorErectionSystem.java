@@ -121,5 +121,8 @@ public class ElevatorErectionSystem {
         motorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
+    public int getErection(){
+       return motorLeft.getCurrentPosition();
+    }
 
 }

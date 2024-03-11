@@ -235,6 +235,10 @@ public class
         else if (elvatorErectionSystem.getErection() == 2000){
             yks.YksSetPosition(0.45);
         }
+        else if (elvatorErectionSystem.getErection() == 2000){
+            yks.YksSetPosition(0.45);
+        }
+
 
     if(gamepad1.right_stick_button) {
         new Thread(new Runnable() {

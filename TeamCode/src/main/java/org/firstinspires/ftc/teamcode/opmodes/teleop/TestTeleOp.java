@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -24,6 +25,8 @@ public class
     private DriveSystem driveSystem;
     private ElevatorSystem elevatorSystem;
     private ElevatorErectionSystem elvatorErectionSystem;
+
+    private RevBlinkinLedDriver ledDriver;
 
     private boolean RLBPressed = false;
     private boolean XPressed = false;
@@ -54,15 +57,20 @@ public class
         if (driveSystem==null){
             driveSystem = new DriveSystem(hardwareMap,gamepad1,0);
         }
+
         yks = new EndPointSystem(hardwareMap);
         elevatorSystem = new ElevatorSystem(hardwareMap);
         elvatorErectionSystem = new ElevatorErectionSystem(hardwareMap);
         hangingRobot = new hangingRobot(hardwareMap);
         launchSystem = new LaunchSystem(hardwareMap);
 
+        ledDriver = hardwareMap.get(RevBlinkinLedDriver.class, "LED");
+
         telemetry.addData("using", DcMotor.RunMode.RUN_USING_ENCODER.equals(DcMotor.RunMode.RUN_WITHOUT_ENCODER));
         telemetry.addData("endInit", "");
         telemetry.update();
+
+        ledDriver.setPattern(RevBlinkinLedDriver.BlinkinPattern.RAINBOW_LAVA_PALETTE);
 
 //        hardwareMap.servo.get("erectionYks").setPosition(0);
     }

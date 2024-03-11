@@ -2,19 +2,18 @@ package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.opmodes.teleop.TestTeleOp;
 import org.firstinspires.ftc.teamcode.robotsystems.ElevatorErectionSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.ElevatorSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.EndPointSystem;
 
 @Autonomous
 //@Disabled
-public class autonomous_R2 extends LinearOpMode {
+public class autonomous_Right extends LinearOpMode {
     BNO055IMU imu;
     Orientation lastAngles = new Orientation();
     double globalAngle, correction;
@@ -30,7 +29,9 @@ public class autonomous_R2 extends LinearOpMode {
 
     ElevatorSystem elevatorSystem;
 
-    int type = 1;
+    testCamera camera;
+
+    testCamera.CenterStageDeterminationPipeline.CSPosition random;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -39,6 +40,8 @@ public class autonomous_R2 extends LinearOpMode {
 
         new ElevatorErectionSystem(hardwareMap);
         new ElevatorSystem(hardwareMap);
+
+        camera = new testCamera(hardwareMap, this);
 
         motorBackLeft = hardwareMap.dcMotor.get("DL");
         motorBackRight = hardwareMap.dcMotor.get("DR");
@@ -60,18 +63,27 @@ public class autonomous_R2 extends LinearOpMode {
         yks.closeYksRight();
         yks.closeYksLeft();
 
-        int random = 2;
+        do{
+            random = camera.pipeline.getAnalysis();
+
+            telemetry.addData("Random: ", random);
+            telemetry.update();
+        }while (!isStarted() && !isStopRequested());
+
         waitForStart();
 
-        rotateBySeconds(0.3,1500);
-        driveSideBySeconds(-0.5, 1000);
-        driveBySeconds(-0.3, 1000);
+        // rotateBySeconds(0.3,1500);
+        // driveSideBySeconds(-0.5, 1000);
+        // driveBySeconds(-0.3, 1000);
 
-        if(random == 1) {
-            driveSideBySeconds(0.3, 3800);
+        if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.RIGHT) {
+            rotateBySeconds(0.3,1500);
+            driveSideBySeconds(-0.5, 1000);
+            driveBySeconds(-0.3, 1000);
+            driveSideBySeconds(0.3, 3600);
             yks.closeErectionYks();
             sleep(500);
-            rotateBySeconds(0.3,160);
+            rotateBySeconds(0.3, 160);
             elevatorSystem.OpenElevator(80);
             yks.openYksRight();
             sleep(500);
@@ -85,18 +97,32 @@ public class autonomous_R2 extends LinearOpMode {
             elevatorErectionSystem.erectionTicks(0);
             yks.closeErectionYks();
             elevatorSystem.CloseElevator();
-            driveSideBySeconds(-0.3,1000);
-            drive45BySeconds(0.7,2000);
-        }
-        else if (random == 2 ){
-            driveSideBySeconds(0.3, 4000);
+            driveSideBySeconds(-0.3, 1000);
+            drive45BySeconds(0.7, 2000);
+        } else if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.LEFT) {
+
+            driveBySeconds(-0.3, 1400);
             yks.closeErectionYks();
             sleep(500);
+            rotateBySeconds(0.3, 2200);
             yks.openYksRight();
             sleep(500);
-            driveSideBySeconds(-0.3, 300);
+            //driveSideBySeconds(-0.3, 300);
+
+            sleep(30000);
         }
-        sleep(30000);
+        if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.CENTER) {
+
+            driveBySeconds(-0.3, 1600);
+            yks.closeErectionYks();
+            sleep(500);
+            rotateBySeconds(0.3, 2700);
+            driveBySeconds(0.3,100);
+            yks.openYksRight();
+            sleep(500);
+            //driveSideBySeconds(-0.3, 300);
+        }
+
 //
 //        yks.closeErectionYks();
 //
@@ -106,6 +132,43 @@ public class autonomous_R2 extends LinearOpMode {
 //        yks.openYksRight();
 //
 //        yks.openErectionYks();
+
+//        if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.RIGHT) {
+//
+//            driveBySeconds(-0.3, 1700);
+//            rotateBySeconds(-0.3, 1500);
+//            driveSideBySeconds(0.3,1000);
+//            yks.closeErectionYks();
+//            sleep(500);
+//            driveBySeconds(0.3, 600);
+//            yks.openYksRight();
+//            sleep(500);
+//            //driveSideBySeconds(-0.3, 300);
+//        }
+//
+//        if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.CENTER) {
+//            driveBySeconds(-0.3, 1400);
+//            yks.closeErectionYks();
+//            sleep(500);
+//            rotateBySeconds(0.3, 1800);
+//            driveBySeconds(0.3,400);
+//            yks.openYksRight();
+//            sleep(500);
+//            //driveSideBySeconds(-0.3, 300);
+//
+//            sleep(30000);
+//        }
+//        if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.LEFT) {
+//
+//            driveBySeconds(-0.3, 1700);
+//            rotateBySeconds(-0.3, 1500);
+//            driveSideBySeconds(0.3,1000);
+//            yks.closeErectionYks();
+//            sleep(500);
+//            yks.openYksRight();
+//            sleep(500);
+//            //driveSideBySeconds(-0.3, 300);
+//        }
     }
 
     public void driveBySeconds(double power, int millSeconds){

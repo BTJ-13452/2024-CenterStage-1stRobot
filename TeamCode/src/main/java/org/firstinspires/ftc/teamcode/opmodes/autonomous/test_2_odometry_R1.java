@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.robotsystems.ElevatorErectionSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.ElevatorSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.EndPointSystem;
 @Autonomous
-
+@Disabled
 public class test_2_odometry_R1 extends LinearOpMode {
     DcMotor motorFrontLeft;
     DcMotor motorFrontRight;

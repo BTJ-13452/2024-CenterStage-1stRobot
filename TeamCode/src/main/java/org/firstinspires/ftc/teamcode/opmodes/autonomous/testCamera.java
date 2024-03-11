@@ -1,10 +1,11 @@
-package org.firstinspires.ftc.teamcode.opmodes.autonomous.openCV;
+package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
-import static org.firstinspires.ftc.teamcode.opmodes.autonomous.openCV.Processor.opMode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.internal.ftdi.eeprom.FT_EEPROM_232H;
@@ -23,16 +24,16 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous
 //@Disabled
-public class testCamera extends LinearOpMode {
+public class testCamera{
 
     OpenCvWebcam webcam;
     CenterStageDeterminationPipeline pipeline;
     CenterStageDeterminationPipeline.CSPosition snapshotAnalysis = CenterStageDeterminationPipeline.CSPosition.LEFT;
 
-    @Override
-    public void runOpMode() throws InterruptedException {
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
-        pipeline = new CenterStageDeterminationPipeline(this);
+
+    public testCamera(HardwareMap map, LinearOpMode mode){
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(map.get(WebcamName.class, "Webcam 1"));
+        pipeline = new CenterStageDeterminationPipeline(mode);
         webcam.setPipeline(pipeline);
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -46,15 +47,6 @@ public class testCamera extends LinearOpMode {
             @Override
             public void onError(int errorCode) {}
         });
-
-        while (!isStarted() && !isStopRequested())
-        {
-//            telemetry.addData("Realtime analysis", pipeline.getAnalysis());
-//            telemetry.update();
-
-            // Don't burn CPU cycles busy-looping in this sample
-            sleep(50);
-        }
     }
 
     public static class CenterStageDeterminationPipeline extends OpenCvPipeline {
@@ -152,5 +144,4 @@ public class testCamera extends LinearOpMode {
             return position;
         }
     }
-
 }

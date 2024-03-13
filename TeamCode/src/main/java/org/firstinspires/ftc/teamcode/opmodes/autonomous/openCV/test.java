@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous.openCV;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.opMode;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -26,5 +24,8 @@ public class test extends LinearOpMode {
 
 
 
+    }
+
+    public static class Autonomus_Red {
     }
 }

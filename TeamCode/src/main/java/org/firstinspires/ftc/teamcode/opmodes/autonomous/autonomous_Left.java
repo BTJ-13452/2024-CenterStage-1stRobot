@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -11,7 +12,7 @@ import org.firstinspires.ftc.teamcode.robotsystems.ElevatorSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.EndPointSystem;
 
 @Autonomous
-//@Disabled
+@Disabled
 public class autonomous_Left extends LinearOpMode {
     BNO055IMU imu;
     Orientation lastAngles = new Orientation();
@@ -28,7 +29,7 @@ public class autonomous_Left extends LinearOpMode {
 
     ElevatorSystem elevatorSystem;
 
-    testCamera camera;
+    testCamera camera ;
 
     testCamera.CenterStageDeterminationPipeline.CSPosition random;
 
@@ -63,7 +64,7 @@ public class autonomous_Left extends LinearOpMode {
         yks.closeYksLeft();
 
         do {
-            random = camera.pipeline.getAnalysis();
+
 
             telemetry.addData("Random: ", random);
             telemetry.update();
@@ -72,7 +73,9 @@ public class autonomous_Left extends LinearOpMode {
         waitForStart();
 
 
-        if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.RIGHT) {
+        if (testCamera.CenterStageDeterminationPipeline.getPosition() == 1) {
+
+
             driveSideBySeconds(0.5, 1000);
             sleep(500);
             elevatorErectionSystem.erectionTicks(1400);
@@ -82,7 +85,8 @@ public class autonomous_Left extends LinearOpMode {
             sleep(500);
             yks.closeYksLeft();
         }
-        else if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.CENTER){
+        else if (testCamera.CenterStageDeterminationPipeline.getPosition() == 2) {
+
             driveBySeconds(-0.5,1500);
             elevatorErectionSystem.erectionTicks(1400);
             sleep(500);
@@ -91,7 +95,7 @@ public class autonomous_Left extends LinearOpMode {
             yks.openYksLeft();
 
         }
-        else if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.RIGHT) {
+        else if (testCamera.CenterStageDeterminationPipeline.getPosition() == 3) {
             driveSideBySeconds(-0.5, 1000);
             sleep(500);
             elevatorErectionSystem.erectionTicks(1400);

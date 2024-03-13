@@ -23,6 +23,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous
+
 //@Disabled
 public class testCamera{
 
@@ -69,7 +70,7 @@ public class testCamera{
         Mat Cb = new Mat();
         int middleAvg, rightAvg;
 
-        private volatile CSPosition position = CSPosition.LEFT;
+        private static volatile CSPosition position = CSPosition.LEFT;
 
         @Override
         public void init(Mat firstFrame)
@@ -139,7 +140,20 @@ public class testCamera{
         public CenterStageDeterminationPipeline(LinearOpMode opMode) {
             this.opMode = opMode;
         }
-        public CSPosition getAnalysis()
+
+        public static int getPosition() {
+            if(getAnalysis() == CSPosition.LEFT){
+                return 1;
+            }
+            else if(getAnalysis() == CSPosition.CENTER){
+                return 2;
+            }
+            else {
+                return 3;
+            }
+        }
+
+        public static CSPosition getAnalysis()
         {
             return position;
         }

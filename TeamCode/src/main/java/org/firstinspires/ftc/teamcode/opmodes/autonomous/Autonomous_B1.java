@@ -12,7 +12,6 @@ import org.firstinspires.ftc.teamcode.robotsystems.ElevatorErectionSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.ElevatorSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.EndPointSystem;
 @Autonomous
-@Disabled
 public class Autonomous_B1 extends LinearOpMode  {
     BNO055IMU imu;
     Orientation lastAngles = new Orientation();
@@ -56,21 +55,21 @@ public class Autonomous_B1 extends LinearOpMode  {
 
         waitForStart();
 
-        motorBackLeft.setPower(-0.5);
-        motorBackRight.setPower(-0.5);
-        motorFrontLeft.setPower(-0.5);
-        motorFrontRight.setPower(-0.5);
+        motorBackLeft.setPower(-0.3);
+        motorBackRight.setPower(-0.3);
+        motorFrontLeft.setPower(-0.3);
+        motorFrontRight.setPower(-0.3);
 
         sleep(100);
 
         yks.closeErectionYks();
 
-        sleep(5000);
+        sleep(6000);
 
         yks.openYksLeft();
         yks.openYksRight();
 
-        sleep(3000);
+        sleep(20000);
 
     }
 }

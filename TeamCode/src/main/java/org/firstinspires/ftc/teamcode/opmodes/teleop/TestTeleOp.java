@@ -100,6 +100,7 @@ public class
         odometry.Odometry();
         telemetry.addData("LRA", "%6d %6d %6d", odometry.currentLeftPosition, odometry.currentRightPosition, odometry.currentAuxPosition);
         telemetry.addData("xyh", "%6.1f cm %6.1f cm %6.1f deg", odometry.pos.getX(), odometry.pos.getY(),Math.toDegrees(odometry.pos.getH()));
+        telemetry.addData("pos",elvatorErectionSystem.getErection());
         telemetry.update();
 
         if (fildo){
@@ -220,24 +221,22 @@ public class
         }
 
         //automatic Yks Erection
-        if (elvatorErectionSystem.getErection() == 0){
-            yks.YksSetPosition(0);
-        }
-        else if (elvatorErectionSystem.getErection() <= 400 && elvatorErectionSystem.getErection() != 0){
-            yks.YksSetPosition(0.3);
-        }
-        else if (elvatorErectionSystem.getErection() >= 1400 && elvatorErectionSystem.getErection() < 1800){
-            yks.YksSetPosition(0.7);
-        }
-        else if (elvatorErectionSystem.getErection() <= 1800 && elvatorErectionSystem.getErection() < 2000){
-            yks.YksSetPosition(0.6);
-        }
-        else if (elvatorErectionSystem.getErection() == 2000){
-            yks.YksSetPosition(0.45);
-        }
-        else if (elvatorErectionSystem.getErection() == 2000){
-            yks.YksSetPosition(0.45);
-        }
+
+       // if (elvatorErectionSystem.getErection() == 0){
+       //     yks.YksSetPosition(0);
+       // }
+        //else if (elvatorErectionSystem.getErection() <= 400 && elvatorErectionSystem.getErection() != 0){
+          //  yks.YksSetPosition(0.3);
+        //}
+        //else if (elvatorErectionSystem.getErection() >= 1400 && elvatorErectionSystem.getErection() < 1800){
+          //  yks.YksSetPosition(0.7);
+        //}
+        //else if (elvatorErectionSystem.getErection() <= 1800 && elvatorErectionSystem.getErection() < 2000){
+          //  yks.YksSetPosition(0.6);
+        //}
+        //else if (elvatorErectionSystem.getErection() == 2000){
+         //   yks.YksSetPosition(0.45);
+        //}
 
 
     if(gamepad1.right_stick_button) {

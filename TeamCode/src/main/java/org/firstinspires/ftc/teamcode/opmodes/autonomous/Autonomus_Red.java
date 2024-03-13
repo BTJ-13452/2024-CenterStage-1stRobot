@@ -85,14 +85,18 @@ import java.util.List;
             if (true||random == testCamera.CenterStageDeterminationPipeline.CSPosition.RIGHT ||random == testCamera.CenterStageDeterminationPipeline.CSPosition.LEFT){
 
                 rotateBySeconds(0.3, 1500);
+                sleep(2000);
                 driveSideBySeconds(-0.5, 1000);
+                sleep(2000);
                 driveBySeconds(-0.3, 1000);
+                sleep(2000);
                 driveSideBySecondsToAprilTag(0.3, 5, 1);
-                sleep(500);
-                rotateBySecondsToAprilTag(0.3,5,90,180);
+                sleep(2000);
+               // rotateBySecondsToAprilTag(0.3,5,10,12);
+                driveBySecondsToAprilTag(0.3,5,17);
+                sleep(5000);
                 yks.closeErectionYks();
-                sleep(20000);
-                rotateBySeconds(0.3, 160);
+                sleep(2000);
                 elevatorSystem.OpenElevator(80);
                 yks.openYksRight();
                 sleep(500);
@@ -211,7 +215,19 @@ import java.util.List;
 
             sleep(millSeconds);
             stopDrive();
+        }public void driveBySecondsToAprilTag(double power, int id,double distance){
+        motorBackRight.setPower(power);
+        motorFrontRight.setPower(power);
+        motorBackLeft.setPower(power);
+        motorFrontLeft.setPower(power);
+        AprilTagDetection DTA = GetDetection(id);
+
+
+        while(DTA==null||DTA.ftcPose.y<distance){
+            DTA=GetDetection(id);
         }
+        stopDrive();
+    }
 
         public void rotateBySeconds(double power, int millSeconds){
             motorBackRight.setPower(-power);

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -16,7 +17,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import java.util.List;
 
 @Autonomous
-    @Disabled
+    //@Disabled
     public class Autonomus_Red extends LinearOpMode {
         BNO055IMU imu;
         Orientation lastAngles = new Orientation();
@@ -33,7 +34,7 @@ import java.util.List;
 
         ElevatorSystem elevatorSystem;
 
-        testCamera camera;
+      //  testCamera camera;
 
         testCamera.CenterStageDeterminationPipeline.CSPosition random;
 
@@ -49,7 +50,7 @@ import java.util.List;
             new ElevatorErectionSystem(hardwareMap);
             new ElevatorSystem(hardwareMap);
 
-            camera = new testCamera(hardwareMap, this);
+           // camera = new testCamera(hardwareMap, this);
 
             motorBackLeft = hardwareMap.dcMotor.get("DL");
             motorBackRight = hardwareMap.dcMotor.get("DR");
@@ -72,26 +73,25 @@ import java.util.List;
             yks.closeYksLeft();
             aprilTag = new AprilTag(hardwareMap);
 
-            do{
-                random = camera.pipeline.getAnalysis();
-
-                telemetry.addData("Random: ", random);
-                telemetry.update();
-            }while (!isStarted() && !isStopRequested());
+//            do{
+//                random = camera.pipeline.getAnalysis();
+//
+//                telemetry.addData("Random: ", random);
+//                telemetry.update();
+//            }while (!isStarted() && !isStopRequested());
 
             waitForStart();
 
-            // rotateBySeconds(0.3,1500);
-            // driveSideBySeconds(-0.5, 1000);
-            // driveBySeconds(-0.3, 1000);
+            if (true||random == testCamera.CenterStageDeterminationPipeline.CSPosition.RIGHT ||random == testCamera.CenterStageDeterminationPipeline.CSPosition.LEFT){
 
-            if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.RIGHT) {
-                rotateBySeconds(0.3,1500);
+                rotateBySeconds(0.3, 1500);
                 driveSideBySeconds(-0.5, 1000);
                 driveBySeconds(-0.3, 1000);
-                driveSideBySeconds(0.3, 3600);
-                yks.closeErectionYks();
+                driveSideBySecondsToAprilTag(0.3, 5, 1);
                 sleep(500);
+                rotateBySecondsToAprilTag(0.3,5,90,180);
+                yks.closeErectionYks();
+                sleep(20000);
                 rotateBySeconds(0.3, 160);
                 elevatorSystem.OpenElevator(80);
                 yks.openYksRight();
@@ -108,6 +108,7 @@ import java.util.List;
                 elevatorSystem.CloseElevator();
                 driveSideBySeconds(-0.3, 1000);
                 drive45BySeconds(0.7, 2000);
+
             } else if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.LEFT) {
 
                 rotateBySeconds(0.3,1500);
@@ -128,8 +129,11 @@ import java.util.List;
 //            //driveSideBySeconds(-0.3, 300);
 //
 //            sleep(30000);
+
+
+
             }
-            if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.CENTER) {
+            else if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.CENTER) {
 
                 driveBySeconds(-5,1600);
                 yks.closeErectionYks();
@@ -218,6 +222,17 @@ import java.util.List;
             sleep(millSeconds);
             stopDrive();
         }
+    public void rotateBySecondsToAprilTag(double power, int id,double minAngle,double maxAngle){
+        motorBackRight.setPower(-power);
+        motorFrontRight.setPower(-power);
+        motorBackLeft.setPower(power);
+        motorFrontLeft.setPower(power);
+        AprilTagDetection ATD =GetDetection(id);
+        while(ATD==null||ATD.ftcPose.yaw>maxAngle||ATD==null||ATD.ftcPose.yaw<minAngle){
+            ATD=GetDetection(id);
+        }
+        stopDrive();
+    }
         public void driveSideBySeconds(double power, int millSeconds){
             motorBackRight.setPower(power);
             motorFrontRight.setPower(-power);
@@ -227,6 +242,17 @@ import java.util.List;
             sleep(millSeconds);
             stopDrive();
         }
+    public void driveSideBySecondsToAprilTag(double power, int id,double distance){
+        motorBackRight.setPower(power);
+        motorFrontRight.setPower(-power);
+        motorBackLeft.setPower(-power);
+        motorFrontLeft.setPower(power);
+
+        while(GetDetection(id)==null||GetDetection(id).rawPose.x>distance){
+
+        }
+            stopDrive();
+    }
         public void drive45BySeconds(double power, int millSeconds){
             motorBackRight.setPower(-power);
             motorFrontLeft.setPower(-power);
@@ -246,8 +272,13 @@ import java.util.List;
             for (AprilTagDetection DATA : AT
             ) {
                 if (DATA.id == ID) {
+                    telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", DATA.ftcPose.x, DATA.ftcPose.y, DATA.ftcPose.z));
+                    telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", DATA.ftcPose.pitch, DATA.ftcPose.roll, DATA.ftcPose.yaw));
+                    telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", DATA.ftcPose.range, DATA.ftcPose.bearing, DATA.ftcPose.elevation));
+                    telemetry.update();
                     return DATA;
                 }
+
             }
 
         return null;

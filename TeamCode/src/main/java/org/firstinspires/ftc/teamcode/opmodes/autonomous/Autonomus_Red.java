@@ -7,11 +7,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.robotsystems.AprilTag;
 import org.firstinspires.ftc.teamcode.robotsystems.ElevatorErectionSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.ElevatorSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.EndPointSystem;
+import org.firstinspires.ftc.teamcode.robotsystems.hangingRobot;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 import java.util.List;
@@ -40,7 +42,7 @@ import java.util.List;
 
         AprilTag aprilTag;
 
-
+        int type =2;
 
         @Override
         public void runOpMode() throws InterruptedException {
@@ -49,8 +51,9 @@ import java.util.List;
 
             new ElevatorErectionSystem(hardwareMap);
             new ElevatorSystem(hardwareMap);
+            new hangingRobot(hardwareMap);
 
-           // camera = new testCamera(hardwareMap, this);
+            // camera = new testCamera(hardwareMap, this);
 
             motorBackLeft = hardwareMap.dcMotor.get("DL");
             motorBackRight = hardwareMap.dcMotor.get("DR");
@@ -82,27 +85,73 @@ import java.util.List;
 
             waitForStart();
 
-            if (true||random == testCamera.CenterStageDeterminationPipeline.CSPosition.RIGHT ||random == testCamera.CenterStageDeterminationPipeline.CSPosition.LEFT){
+            if (type==3) {
 
-                rotateBySeconds(0.3, 1500);
-                sleep(2000);
-                driveSideBySeconds(-0.5, 1000);
-                sleep(2000);
-                driveBySeconds(-0.3, 1000);
-                sleep(2000);
-                driveSideBySecondsToAprilTag(0.3, 5, 1);
-                sleep(2000);
-               // rotateBySecondsToAprilTag(0.3,5,10,12);
-                driveBySecondsToAprilTag(0.3,5,17);
-                sleep(5000);
+                rotateBySeconds(0.3, 1400);
+                sleep(500);
+                driveSideBySeconds(-0.5, 2000);
+                sleep(500);
+                driveBySeconds(-0.3, 1300);
+                sleep(500);
+                driveSideBySecondsToAprilTag(0.4, 5, 3);
+                sleep(1000);
                 yks.closeErectionYks();
-                sleep(2000);
-                elevatorSystem.OpenElevator(80);
+                sleep(500);
+                // rotateBySecondsToAprilTag(0.3,5,10,12);
+                driveBySecondsToAprilTag(0.3, 5, 36);
+                sleep(500);
                 yks.openYksRight();
                 sleep(500);
-                elevatorErectionSystem.erectionTicks(2700);
-                sleep(2000);
+                elevatorSystem.CloseElevator();
                 yks.openErectionYks(0.6);
+                driveBySecondsToAprilTag(-0.3,5,18);
+                sleep(500);
+                driveSideBySecondsToAprilTag(-0.3, 4, 2);
+                elevatorErectionSystem.erectionTicks(2450);
+                sleep(500);
+                elevatorSystem.OpenElevator(700);
+                sleep(1000);
+                yks.openYksLeft();
+                sleep(500);
+                elevatorErectionSystem.erectionTicks(0);
+                yks.closeErectionYks();
+                elevatorSystem.CloseElevator();
+                driveSideBySecondsToAprilTag(-0.3, 6, -3);
+                driveSideBySeconds(-0.3,1000);
+                drive45BySeconds(0.5, 1500);
+            }
+            if (type==1) {
+
+//                rotateBySeconds(0.3, 1400);
+//                sleep(500);
+//                driveSideBySeconds(-0.5, 1000);
+//                sleep(500);
+//                driveBySeconds(-0.3, 1300);
+//                sleep(500);
+//                yks.closeErectionYks();
+//                sleep(500);
+                rotateBySeconds(0.3, 1500);
+                sleep(500);
+                driveSideBySeconds(-0.5, 1000);
+                sleep(500);
+                driveBySeconds(-0.3, 1300);
+                sleep(500);
+                yks.closeErectionYks();
+                sleep(500);
+                driveSideBySecondsToAprilTag(0.4, 5, 0);
+                sleep(2000);
+                // rotateBySecondsToAprilTag(0.3,5,10,12);
+                driveBySecondsToAprilTag(0.3, 5, 15);
+                sleep(1000);
+                rotateBySecondsToAprilTag(0.2, 5, -10, 10);
+                sleep(1000);
+                yks.openYksRight();
+                sleep(500);
+                elevatorSystem.CloseElevator();
+                yks.openErectionYks(0.6);
+                driveSideBySecondsToAprilTag(-0.3, 6, -1);
+                elevatorErectionSystem.erectionTicks(2500);
+                sleep(1000);
                 elevatorSystem.OpenElevator(1200);
                 sleep(500);
                 yks.openYksLeft();
@@ -110,102 +159,52 @@ import java.util.List;
                 elevatorErectionSystem.erectionTicks(0);
                 yks.closeErectionYks();
                 elevatorSystem.CloseElevator();
-                driveSideBySeconds(-0.3, 1000);
-                drive45BySeconds(0.7, 2000);
-
-            } else if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.LEFT) {
-
-                rotateBySeconds(0.3,1500);
-                driveSideBySeconds(-0.5,1000);
-                yks.openYksRight();
-                sleep(500);
-                driveBySeconds(0.5,1000);
-                elevatorSystem.Extension();
-                elevatorErectionSystem.erectionTicks(400);
-                sleep(500);
-                yks.openYksLeft();
-//            driveBySeconds(-0.3, 1400);
-//            yks.closeErectionYks();
-//            sleep(500);
-//            rotateBySeconds(0.3, 2200);
-//            yks.openYksRight();
-//            sleep(500);
-//            //driveSideBySeconds(-0.3, 300);
-//
-//            sleep(30000);
-
-
-
-            }
-            else if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.CENTER) {
-
-                driveBySeconds(-5,1600);
-                yks.closeErectionYks();
-                sleep(500);
-                elevatorErectionSystem.erectionTicks(1700);
-                sleep(500);
-                yks.openYksRight();
-                sleep(500);
-                rotateBySeconds(0.3,1500);
-                driveBySeconds(-0.5,1500);
-                yks.openYksLeft();
-//            driveBySeconds(-0.3, 1600);
-//            yks.closeErectionYks();
-//            sleep(500);
-//            rotateBySeconds(0.3, 2700);
-//            driveBySeconds(0.3,100);
-//            yks.openYksRight();
-//            sleep(500);
-                //driveSideBySeconds(-0.3, 300);
+                driveSideBySecondsToAprilTag(-0.3, 6, -3);
+                driveSideBySeconds(-0.3,1000);
+                drive45BySeconds(0.5, 2500);
             }
 
-//
-//        yks.closeErectionYks();
-//
-//        sleep(2000);
-//
-//        yks.openYksLeft();
-//        yks.openYksRight();
-//
-//        yks.openErectionYks();
+            if (type==2){
+                    rotateBySeconds(0.3, 1500);
+                    sleep(500);
+                    driveSideBySeconds(-0.5, 1000);
+                    sleep(500);
+                    driveBySeconds(-0.3, 1000);
+                    sleep(500);
+                    driveSideBySeconds(-0.5, 1000);
+                    sleep(100);
+                    driveSideBySecondsToAprilTag(0.3, 4, 0);
+                    sleep(500);
+                    yks.closeErectionYks();
+                    sleep(500);
+                    elevatorSystem.OpenElevator(400);
+                    // rotateBySecondsToAprilTag(0.3,5,10,12);
+                    driveBySecondsToAprilTag(0.3, 4, 15);
+                    sleep(1000);
+                    rotateBySecondsToAprilTag(0.2, 4, -7, 7);
+                    sleep(1000);
+                    driveSideBySecondsToAprilTag(0.3, 4, 1);
+                    sleep(500);
+                    yks.openYksRight();
+                    sleep(500);
+                    elevatorSystem.CloseElevator();
+                    driveSideBySecondsToAprilTag(-0.3, 5, 0);
+                    driveBySecondsToAprilTag(-0.3, 5, 13);
+                    elevatorErectionSystem.erectionTicks(2525);
+                    sleep(1000);
+                    yks.openErectionYks(0.6);
+                    sleep(500);
+                    yks.openYksLeft();
+                    sleep(500);
+                    elevatorErectionSystem.erectionTicks(0);
+                    yks.closeErectionYks();
+                    elevatorSystem.CloseElevator();
+//                    driveSideBySecondsToAprilTag(-0.3, 6, -3);
+                    driveSideBySeconds(-0.5,2000);
+                    driveBySeconds(-0.7,500);
+                }
 
-//        if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.RIGHT) {
-//
-//            driveBySeconds(-0.3, 1700);
-//            rotateBySeconds(-0.3, 1500);
-//            driveSideBySeconds(0.3,1000);
-//            yks.closeErectionYks();
-//            sleep(500);
-//            driveBySeconds(0.3, 600);
-//            yks.openYksRight();
-//            sleep(500);
-//            //driveSideBySeconds(-0.3, 300);
-//        }
-//
-//        if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.CENTER) {
-//            driveBySeconds(-0.3, 1400);
-//            yks.closeErectionYks();
-//            sleep(500);
-//            rotateBySeconds(0.3, 1800);
-//            driveBySeconds(0.3,400);
-//            yks.openYksRight();
-//            sleep(500);
-//            //driveSideBySeconds(-0.3, 300);
-//
-//            sleep(30000);
-//        }
-//        if (random == testCamera.CenterStageDeterminationPipeline.CSPosition.LEFT) {
-//
-//            driveBySeconds(-0.3, 1700);
-//            rotateBySeconds(-0.3, 1500);
-//            driveSideBySeconds(0.3,1000);
-//            yks.closeErectionYks();
-//            sleep(500);
-//            yks.openYksRight();
-//            sleep(500);
-//            //driveSideBySeconds(-0.3, 300);
-//        }
-        }
+      }
 
         public void driveBySeconds(double power, int millSeconds){
             motorBackRight.setPower(power);
@@ -215,15 +214,18 @@ import java.util.List;
 
             sleep(millSeconds);
             stopDrive();
-        }public void driveBySecondsToAprilTag(double power, int id,double distance){
+        }
+        public void driveBySecondsToAprilTag(double power, int id,double distance){
         motorBackRight.setPower(power);
         motorFrontRight.setPower(power);
         motorBackLeft.setPower(power);
         motorFrontLeft.setPower(power);
         AprilTagDetection DTA = GetDetection(id);
+        telemetry.addData("fgdfg",234);
+        telemetry.update();
 
-
-        while(DTA==null||DTA.ftcPose.y<distance){
+        int mol = power>0? 1:-1;
+        while(DTA==null||DTA.ftcPose.y*mol<distance*mol){
             DTA=GetDetection(id);
         }
         stopDrive();
@@ -243,10 +245,12 @@ import java.util.List;
         motorFrontRight.setPower(-power);
         motorBackLeft.setPower(power);
         motorFrontLeft.setPower(power);
+
         AprilTagDetection ATD =GetDetection(id);
         while(ATD==null||ATD.ftcPose.yaw>maxAngle||ATD==null||ATD.ftcPose.yaw<minAngle){
             ATD=GetDetection(id);
         }
+
         stopDrive();
     }
         public void driveSideBySeconds(double power, int millSeconds){
@@ -264,7 +268,10 @@ import java.util.List;
         motorBackLeft.setPower(-power);
         motorFrontLeft.setPower(power);
 
-        while(GetDetection(id)==null||GetDetection(id).rawPose.x>distance){
+        int mol = power>0? 1:-1;
+        AprilTagDetection ATD =GetDetection(id);
+        while(ATD==null||mol*ATD.ftcPose.x<distance*mol){
+            ATD = GetDetection(id);
 
         }
             stopDrive();
@@ -294,10 +301,8 @@ import java.util.List;
                     telemetry.update();
                     return DATA;
                 }
-
             }
 
         return null;
         }
-
 }

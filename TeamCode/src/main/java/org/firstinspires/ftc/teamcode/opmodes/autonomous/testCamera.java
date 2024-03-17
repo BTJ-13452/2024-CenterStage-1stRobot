@@ -27,7 +27,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 //@Disabled
 public class testCamera{
 
-    OpenCvWebcam webcam;
+    public OpenCvWebcam webcam;
     CenterStageDeterminationPipeline pipeline;
     CenterStageDeterminationPipeline.CSPosition snapshotAnalysis = CenterStageDeterminationPipeline.CSPosition.LEFT;
 
@@ -60,10 +60,11 @@ public class testCamera{
 
         static final Scalar Black = new Scalar(0, 0, 0);
 
-        static final Point CENTER_TOPLEFT_ANCHOR_POINT = new Point(20, 300);
-        static final Point CENTER_BUTTOMRIGHT_ANCHOR_POINT = new Point(250, 450);
-        static final Point RIGHT_TOPLEFT_ANCHOR_POINT = new Point(400, 300);
-        static final Point RIGHT_BUTTOMRIGHT_ANCHOR_POINT = new Point(530, 450);
+        static final Point CENTER_TOPLEFT_ANCHOR_POINT = new Point(70, 315);
+        static final Point CENTER_BUTTOMRIGHT_ANCHOR_POINT = new Point(175, 450);
+
+        static final Point RIGHT_TOPLEFT_ANCHOR_POINT = new Point(435, 300);
+        static final Point RIGHT_BUTTOMRIGHT_ANCHOR_POINT = new Point(540, 415);
 
         Mat middle_Cb, right_Cb;
         Mat YCrCb = new Mat();
@@ -119,14 +120,15 @@ public class testCamera{
                     RIGHT_BUTTOMRIGHT_ANCHOR_POINT, // Second point which defines the rectangle
                     Black, // The color the rectangle is drawn in
                     4);
-            int x = rightAvg + middleAvg;
-            if (rightAvg < middleAvg && rightAvg < 70) {
+
+
+            if (rightAvg < 80) {
                 position = CSPosition.RIGHT;
-            }  if (middleAvg<rightAvg && middleAvg<110) {
+            } else if (middleAvg < 80) {
                 position = CSPosition.CENTER;
-            }  if (middleAvg>rightAvg && rightAvg < 110){
-                position = CSPosition.LEFT;
             }
+               else position = CSPosition.LEFT;
+
 
             opMode.telemetry.addData("Right Avg: ", rightAvg);
             opMode.telemetry.addData("Middle Avg: ", middleAvg);

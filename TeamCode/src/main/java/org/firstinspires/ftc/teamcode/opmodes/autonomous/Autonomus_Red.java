@@ -36,7 +36,7 @@ import java.util.List;
 
         ElevatorSystem elevatorSystem;
 
-      //  testCamera camera;
+        testCamera camera;
 
         testCamera.CenterStageDeterminationPipeline.CSPosition random;
 
@@ -53,7 +53,7 @@ import java.util.List;
             new ElevatorSystem(hardwareMap);
             new hangingRobot(hardwareMap);
 
-            // camera = new testCamera(hardwareMap, this);
+            camera = new testCamera(hardwareMap, this);
 
             motorBackLeft = hardwareMap.dcMotor.get("DL");
             motorBackRight = hardwareMap.dcMotor.get("DR");
@@ -74,14 +74,28 @@ import java.util.List;
             yks = new EndPointSystem(hardwareMap);
             yks.closeYksRight();
             yks.closeYksLeft();
+
+            do{
+                random = camera.pipeline.getAnalysis();
+            }while (!isStarted() && !isStopRequested());
+
+            switch (random){
+                case LEFT:
+                    type = 3;
+                    break;
+                case CENTER:
+                    type = 2;
+                    break;
+                case RIGHT:
+                    type = 1 ;
+                    break;
+
+            }
+
+            camera.webcam.closeCameraDevice();
+
             aprilTag = new AprilTag(hardwareMap);
 
-//            do{
-//                random = camera.pipeline.getAnalysis();
-//
-//                telemetry.addData("Random: ", random);
-//                telemetry.update();
-//            }while (!isStarted() && !isStopRequested());
 
             waitForStart();
 
@@ -104,12 +118,12 @@ import java.util.List;
                 sleep(500);
                 elevatorSystem.CloseElevator();
                 yks.openErectionYks(0.6);
-                driveBySecondsToAprilTag(-0.3,5,18);
+                driveBySecondsToAprilTag(-0.3,4,16);
                 sleep(500);
                 driveSideBySecondsToAprilTag(-0.3, 4, 2);
                 elevatorErectionSystem.erectionTicks(2450);
                 sleep(500);
-                elevatorSystem.OpenElevator(700);
+                elevatorSystem.OpenElevator(300);
                 sleep(1000);
                 yks.openYksLeft();
                 sleep(500);

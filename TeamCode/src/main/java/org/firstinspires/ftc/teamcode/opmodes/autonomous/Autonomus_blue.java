@@ -99,7 +99,7 @@ public class Autonomus_blue extends LinearOpMode {
             sleep(500);
             elevatorSystem.OpenElevator(300);
             sleep(500);
-            yks.openYksRight();
+            yks.openYksLeft();
             sleep(500);
             elevatorSystem.CloseElevator();
             yks.openErectionYks(0.6);
@@ -110,7 +110,7 @@ public class Autonomus_blue extends LinearOpMode {
             sleep(1000);
             elevatorSystem.OpenElevator(100);
             sleep(500);
-            yks.openYksLeft();
+            yks.openYksRight();
             sleep(500);
             elevatorErectionSystem.erectionTicks(0);
             yks.closeErectionYks();
@@ -136,23 +136,24 @@ public class Autonomus_blue extends LinearOpMode {
             sleep(500);
             yks.closeErectionYks();
             sleep(500);
-            driveSideBySecondsToAprilTag(-0.4, 3, 0);
+            driveSideBySecondsToAprilTag(-0.3, 3, -5);
             sleep(500);
-            // rotateBySecondsToAprilTag(0.3,5,10,12);
             driveBySecondsToAprilTag(0.3, 3, 15);
             sleep(1000);
-            elevatorSystem.OpenElevator(200);
             rotateBySecondsToAprilTag(-0.2, 3, -10, 10);
             sleep(1000);
-            yks.openYksRight();
+            yks.openYksLeft();
             sleep(500);
             elevatorSystem.CloseElevator();
-            yks.openErectionYks(0.6);
-            driveSideBySecondsToAprilTag(0.3, 1, -1);
-            driveBySecondsToAprilTag(-0.3,1,13);
+            yks.openErectionYks(0.7);
+            driveBySecondsToAprilTag(-0.3,3,13);
+            sleep(500);
+            driveSideBySecondsToAprilTag(0.3, 3, -1);
             elevatorErectionSystem.erectionTicks(2450);
             sleep(1000);
-            yks.openYksLeft();
+            elevatorSystem.OpenElevator(100);
+            sleep(500);
+            yks.openYksRight();
             sleep(500);
             elevatorErectionSystem.erectionTicks(0);
             yks.closeErectionYks();
@@ -162,42 +163,42 @@ public class Autonomus_blue extends LinearOpMode {
         }
         //זה לא עובד צריך לעבוד עליו
         if (type==2){
-            rotateBySeconds(-0.3, 1500);
+            rotateBySeconds(-0.3, 1400);
             sleep(500);
             driveSideBySeconds(0.5, 1000);
             sleep(500);
-            driveBySeconds(-0.3, 1000);
+            driveBySeconds(-0.3, 1300);
             sleep(500);
-            driveSideBySeconds(-0.5, 1000);
+
             sleep(500);
-            driveSideBySecondsToAprilTag(-0.4, 3, 0);
+            driveSideBySecondsToAprilTag(-0.4, 3,1);
             sleep(500);
-            yks.closeErectionYks();
+            yks.openErectionYks(0.7);
+            driveBySecondsToAprilTag(-0.3, 3,13.4);
             sleep(500);
-            elevatorSystem.OpenElevator(400);
-            // rotateBySecondsToAprilTag(0.3,5,10,12);
-            driveBySecondsToAprilTag(0.3, 3, 15);
+            driveSideBySecondsToAprilTag(-0.3, 3,0);
+            elevatorErectionSystem.erectionTicks(2450);
             sleep(1000);
-            rotateBySecondsToAprilTag(-0.2, 3, -7, 7);
-            sleep(1000);
-            driveSideBySecondsToAprilTag(-0.3, 3, 3);
+            elevatorSystem.OpenElevator(100);
             sleep(500);
             yks.openYksRight();
-            sleep(500);
-            elevatorSystem.CloseElevator();
-            driveSideBySecondsToAprilTag(-0.3, 2, 0);
-            elevatorErectionSystem.erectionTicks(2525);
-            sleep(1000);
-            yks.openErectionYks(0.6);
-            elevatorSystem.OpenElevator(1200);
-            sleep(500);
-            yks.openYksLeft();
             sleep(500);
             elevatorErectionSystem.erectionTicks(0);
             yks.closeErectionYks();
             elevatorSystem.CloseElevator();
-            driveSideBySecondsToAprilTag(-0.3, 1, -3);
-            drive45BySeconds(0.5, 2500);
+            sleep(1000);
+            driveSideBySecondsToAprilTag(-0.3, 3,-3);
+            sleep(500);
+            rotateBySecondsToAprilTag(-0.2, 3, -4, 4);
+            sleep(100);
+            driveBySecondsToAprilTag(0.3, 3,30);
+            sleep(500);
+           // rotateBySecondsToAprilTag(-0.2, 1, -3, 3);
+
+//            sleep(100);
+//            yks.openErectionYks();
+//            driveSideBySeconds(0.3,3000);
+//            driveBySeconds(-0.3,2000);
         }
 
     }

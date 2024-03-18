@@ -125,4 +125,15 @@ public class ElevatorErectionSystem {
        return motorLeft.getCurrentPosition();
     }
 
+    final int[] POSITIONS = new int[]{2500,2200,1800,800,400,150};
+
+    public int getBackdropPosition(){
+        int position = motorRight.getCurrentPosition();
+        for (int i = 0; i < POSITIONS.length; i++) {
+            if(position>POSITIONS[i])
+                return i;
+        }
+        return POSITIONS.length;
+    }
+
 }

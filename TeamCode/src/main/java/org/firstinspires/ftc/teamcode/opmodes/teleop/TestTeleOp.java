@@ -97,11 +97,11 @@ public class
     @Override
     public void loop() {
         reInit();
-        odometry.Odometry();
-        telemetry.addData("LRA", "%6d %6d %6d", odometry.currentLeftPosition, odometry.currentRightPosition, odometry.currentAuxPosition);
-        telemetry.addData("xyh", "%6.1f cm %6.1f cm %6.1f deg", odometry.pos.getX(), odometry.pos.getY(),Math.toDegrees(odometry.pos.getH()));
-        telemetry.addData("pos",elvatorErectionSystem.getErection());
-        telemetry.update();
+//        odometry.Odometry();
+//        telemetry.addData("LRA", "%6d %6d %6d", odometry.currentLeftPosition, odometry.currentRightPosition, odometry.currentAuxPosition);
+//        telemetry.addData("xyh", "%6.1f cm %6.1f cm %6.1f deg", odometry.pos.getX(), odometry.pos.getY(),Math.toDegrees(odometry.pos.getH()));
+//        telemetry.addData("pos",elvatorErectionSystem.getErection());
+//        telemetry.update();
 
         if (fildo){
         driveSystem.Drive();
@@ -219,6 +219,17 @@ public class
         else if(!gamepad2.b){
             G2BPressed = false;
         }
+
+
+
+        telemetry.addData("pos",elvatorErectionSystem.getBackdropPosition());
+        telemetry.addData("tick",elvatorErectionSystem.getErection());
+        telemetry.update();
+
+//        yks.setBackdropPosition(elvatorErectionSystem.getBackdropPosition());
+
+
+
 
         //automatic Yks Erection
 

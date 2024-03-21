@@ -60,11 +60,11 @@ public class testCamera{
 
         static final Scalar Black = new Scalar(0, 0, 0);
 
-        static final Point CENTER_TOPLEFT_ANCHOR_POINT = new Point(70, 315);
-        static final Point CENTER_BUTTOMRIGHT_ANCHOR_POINT = new Point(175, 450);
+        static final Point CENTER_TOPLEFT_ANCHOR_POINT = new Point(170, 240);
+        static final Point CENTER_BUTTOMRIGHT_ANCHOR_POINT = new Point(235, 328);
 
-        static final Point RIGHT_TOPLEFT_ANCHOR_POINT = new Point(435, 300);
-        static final Point RIGHT_BUTTOMRIGHT_ANCHOR_POINT = new Point(540, 415);
+        static final Point RIGHT_TOPLEFT_ANCHOR_POINT = new Point(410, 240);
+        static final Point RIGHT_BUTTOMRIGHT_ANCHOR_POINT = new Point(500, 330);
 
         Mat middle_Cb, right_Cb;
         Mat YCrCb = new Mat();
@@ -122,9 +122,9 @@ public class testCamera{
                     4);
 
 
-            if (rightAvg < 80) {
+            if (rightAvg < 100) {
                 position = CSPosition.RIGHT;
-            } else if (middleAvg < 80) {
+            } else if (middleAvg < 100) {
                 position = CSPosition.CENTER;
             }
                else position = CSPosition.LEFT;

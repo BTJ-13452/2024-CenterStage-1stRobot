@@ -30,11 +30,11 @@ public class testCamera{
     public OpenCvWebcam webcam;
     CenterStageDeterminationPipeline pipeline;
     CenterStageDeterminationPipeline.CSPosition snapshotAnalysis = CenterStageDeterminationPipeline.CSPosition.LEFT;
+    double X_middle,  Y_middle,  X_right,  Y_right, X_middle_down, Y_middle_down,X_right_down,Y_right_down ;
 
-
-    public testCamera(HardwareMap map, LinearOpMode mode){
+    public testCamera(HardwareMap map, LinearOpMode mode, double X_middle, double Y_middle, double X_right, double Y_right, double X_middle_down, double Y_middle_down, double X_right_down, double  Y_right_down ){
         webcam = OpenCvCameraFactory.getInstance().createWebcam(map.get(WebcamName.class, "Webcam 1"));
-        pipeline = new CenterStageDeterminationPipeline(mode);
+        pipeline = new CenterStageDeterminationPipeline(mode, X_middle,  Y_middle,  X_right,  Y_right,  X_middle_down,  Y_middle_down,  X_right_down,   Y_right_down);
         webcam.setPipeline(pipeline);
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -48,10 +48,36 @@ public class testCamera{
             @Override
             public void onError(int errorCode) {}
         });
+        this.X_middle = X_middle;
+        this.Y_middle = Y_middle;
+        this.X_right = X_right;
+        this.Y_right = Y_right;
+        this.X_middle_down = X_middle_down;
+        this.Y_middle_down = Y_middle_down;
+        this.X_right_down = X_right_down;
+        this.Y_right_down = Y_right_down;
     }
 
-    public static class CenterStageDeterminationPipeline extends OpenCvPipeline {
 
+    public testCamera(Point h){}
+    public static class CenterStageDeterminationPipeline extends OpenCvPipeline {
+        double X_middle,  Y_middle,  X_right,  Y_right, X_middle_down, Y_middle_down,X_right_down,Y_right_down ;
+
+        public CenterStageDeterminationPipeline (LinearOpMode opMode, double X_middle, double Y_middle, double X_right, double Y_right, double X_middle_down, double Y_middle_down, double X_right_down, double  Y_right_down ){
+            this.X_middle = X_middle;
+            this.Y_middle = Y_middle;
+            this.X_right = X_right;
+            this.Y_right = Y_right;
+            this.X_middle_down = X_middle_down;
+            this.Y_middle_down = Y_middle_down;
+            this.X_right_down = X_right_down;
+            this.Y_right_down = Y_right_down;
+            this.opMode = opMode;
+            CENTER_TOPLEFT_ANCHOR_POINT = new Point(X_middle, Y_middle);
+            CENTER_BUTTOMRIGHT_ANCHOR_POINT = new Point(X_middle_down, Y_middle_down);
+            RIGHT_TOPLEFT_ANCHOR_POINT = new Point(X_right, Y_right);
+            RIGHT_BUTTOMRIGHT_ANCHOR_POINT = new Point(X_right_down, Y_right_down);
+        }
         public enum CSPosition {
             LEFT,
             CENTER,
@@ -59,12 +85,12 @@ public class testCamera{
         }
 
         static final Scalar Black = new Scalar(0, 0, 0);
-
-        static final Point CENTER_TOPLEFT_ANCHOR_POINT = new Point(170, 240);
-        static final Point CENTER_BUTTOMRIGHT_ANCHOR_POINT = new Point(235, 328);
-
-        static final Point RIGHT_TOPLEFT_ANCHOR_POINT = new Point(410, 240);
-        static final Point RIGHT_BUTTOMRIGHT_ANCHOR_POINT = new Point(500, 330);
+// middle
+       Point CENTER_TOPLEFT_ANCHOR_POINT ;
+        Point CENTER_BUTTOMRIGHT_ANCHOR_POINT ;
+//right
+        Point RIGHT_TOPLEFT_ANCHOR_POINT;
+        Point RIGHT_BUTTOMRIGHT_ANCHOR_POINT ;
 
         Mat middle_Cb, right_Cb;
         Mat YCrCb = new Mat();
@@ -72,6 +98,7 @@ public class testCamera{
         int middleAvg, rightAvg;
 
         private static volatile CSPosition position = CSPosition.LEFT;
+
 
         @Override
         public void init(Mat firstFrame)
@@ -138,10 +165,6 @@ public class testCamera{
             return input;
         }
         private final LinearOpMode opMode;  // Add this field
-
-        public CenterStageDeterminationPipeline(LinearOpMode opMode) {
-            this.opMode = opMode;
-        }
 
         public static int getPosition() {
             if(getAnalysis() == CSPosition.LEFT){

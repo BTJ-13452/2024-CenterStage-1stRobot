@@ -42,7 +42,7 @@ public class autonomous_Right extends LinearOpMode {
         new ElevatorErectionSystem(hardwareMap);
         new ElevatorSystem(hardwareMap);
 
-        camera = new testCamera(hardwareMap, this);
+       // camera = new testCamera(hardwareMap, this);
 
         motorBackLeft = hardwareMap.dcMotor.get("DL");
         motorBackRight = hardwareMap.dcMotor.get("DR");

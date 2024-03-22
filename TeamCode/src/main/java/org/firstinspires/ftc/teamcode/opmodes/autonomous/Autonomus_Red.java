@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.robotsystems.ElevatorSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.EndPointSystem;
 import org.firstinspires.ftc.teamcode.robotsystems.hangingRobot;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.opencv.core.Point;
 
 import java.util.List;
 
@@ -42,6 +43,7 @@ import java.util.List;
 
         AprilTag aprilTag;
 
+
         int type =2;
 
         @Override
@@ -53,7 +55,8 @@ import java.util.List;
             new ElevatorSystem(hardwareMap);
             new hangingRobot(hardwareMap);
 
-            camera = new testCamera(hardwareMap, this);
+            camera = new testCamera(hardwareMap, this,170,240,410,240,235,328,500,330);
+            camera = new testCamera(new Point(6,9));
 
             motorBackLeft = hardwareMap.dcMotor.get("DL");
             motorBackRight = hardwareMap.dcMotor.get("DR");
@@ -92,7 +95,7 @@ import java.util.List;
 
             }
 
-            camera.webcam.closeCameraDevice();
+         //   camera.webcam.closeCameraDevice();
 
             aprilTag = new AprilTag(hardwareMap);
 
